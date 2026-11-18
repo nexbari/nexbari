@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXBARI Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>body{font-family:Inter,system-ui,sans-serif}.hidden{display:none!important}</style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen">
+<div id="loginView" class="min-h-screen grid place-items-center p-4">
+ <form id="loginForm" class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md space-y-4">
+  <div class="text-center"><div class="text-indigo-600 font-black text-3xl">NEXBARI</div><h1 class="font-bold text-xl mt-2">Admin Sign in</h1><p class="text-sm text-slate-500">Sign in with your Supabase admin account</p></div>
+  <label class="block text-sm font-semibold">Email<input id="email" type="email" required class="mt-1 w-full border rounded-xl p-3 font-normal"></label>
+  <label class="block text-sm font-semibold">Password<input id="password" type="password" required class="mt-1 w-full border rounded-xl p-3 font-normal"></label>
+  <button class="w-full rounded-xl bg-indigo-600 text-white font-bold p-3">Sign in</button><p id="loginMsg" class="text-sm text-rose-600"></p>
+ </form>
+</div>
+<div id="appView" class="hidden min-h-screen">
+ <header class="bg-slate-950 text-white px-5 py-4 flex justify-between items-center"><div><b class="text-xl">NEXBARI</b><span class="text-slate-400 text-sm ml-3">Admin Panel</span></div><div class="flex items-center gap-3"><span id="adminEmail" class="text-xs text-slate-300"></span><button id="logoutBtn" class="bg-white/10 px-3 py-2 rounded-lg text-sm">Logout</button></div></header>
+ <main class="max-w-7xl mx-auto p-4 md:p-7">
+  <div class="flex flex-wrap justify-between items-center gap-3 mb-6"><div><h1 class="text-2xl font-black">Product Management</h1><p class="text-sm text-slate-500">Add, edit and publish products to your customer website</p></div><button id="newBtn" class="bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-semibold">+ Add Product</button></div>
+  <div class="grid sm:grid-cols-3 gap-4 mb-6"><div class="bg-white p-5 rounded-2xl"><div class="text-sm text-slate-500">Total products</div><div id="totalCount" class="text-3xl font-black">0</div></div><div class="bg-white p-5 rounded-2xl"><div class="text-sm text-slate-500">Active products</div><div id="activeCount" class="text-3xl font-black">0</div></div><div class="bg-white p-5 rounded-2xl"><div class="text-sm text-slate-500">Featured products</div><div id="featuredCount" class="text-3xl font-black">0</div></div></div>
+  <div class="bg-white rounded-2xl p-4 md:p-6 overflow-x-auto"><div class="flex justify-between gap-3 mb-4"><h2 class="font-bold">Products</h2><input id="search" placeholder="Search products..." class="border rounded-lg px-3 py-2 text-sm"></div><table class="w-full text-sm text-left"><thead><tr class="border-b text-slate-500"><th class="p-3">Product</th><th class="p-3">Category</th><th class="p-3">Price</th><th class="p-3">Status</th><th class="p-3">Actions</th></tr></thead><tbody id="productRows"></tbody></table><p id="tableMsg" class="text-sm text-slate-500 py-5">Loading...</p></div>
+ </main>
+</div>
+<div id="productModal" class="hidden fixed inset-0 bg-slate-950/60 z-20 p-3 overflow-y-auto"><div class="bg-white max-w-3xl mx-auto my-5 rounded-2xl p-6">
+ <div class="flex justify-between items-center mb-5"><h2 id="modalTitle" class="text-xl font-black">Add product</h2><button id="closeModal" class="text-2xl">×</button></div>
+ <form id="productForm" class="grid md:grid-cols-2 gap-4">
+  <input id="productId" type="hidden">
+  <label class="text-sm font-semibold">Product name *<input id="name" required class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold">Category *<select id="category" required class="mt-1 w-full border rounded-lg p-2.5 font-normal"><option>Tech & Gadgets</option><option>Fashion</option><option>Home & Living</option><option>Beauty & Health</option><option>Digital & Software</option><option>Deals</option><option>Other</option></select></label>
+  <label class="text-sm font-semibold">Price *<input id="price" type="number" min="0" step="0.01" required class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold">Price currency *<select id="currency" class="mt-1 w-full border rounded-lg p-2.5 font-normal"><option value="BDT">BDT — Bangladeshi Taka</option><option value="USD">USD — US Dollar</option></select></label>
+  <label class="text-sm font-semibold">Old price<input id="oldPrice" type="number" min="0" step="0.01" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold">Badge<input id="badge" placeholder="Best Seller / Top Rated" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold">Image URL<input id="imageUrl" type="url" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold">Affiliate URL<input id="affiliateUrl" type="url" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold">Marketplace<input id="marketplace" placeholder="Amazon / Daraz / AliExpress" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold">Rating (0–5)<input id="rating" type="number" min="0" max="5" step="0.1" value="4.8" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <label class="text-sm font-semibold md:col-span-2">Short description<textarea id="description" rows="3" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></textarea></label>
+  <label class="text-sm font-semibold md:col-span-2">Review verdict<textarea id="verdict" rows="2" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></textarea></label>
+  <label class="text-sm font-semibold md:col-span-2">Highlights (comma separated)<input id="highlights" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <div class="md:col-span-2 flex flex-wrap gap-5"><label class="text-sm"><input id="featured" type="checkbox" class="mr-2">Featured product</label><label class="text-sm"><input id="active" type="checkbox" checked class="mr-2">Publish / Active</label></div>
+  <div class="md:col-span-2 flex justify-end gap-3"><button type="button" id="cancelBtn" class="border px-4 py-2 rounded-lg">Cancel</button><button class="bg-indigo-600 text-white px-5 py-2 rounded-lg font-bold">Save product</button></div>
+  <p id="formMsg" class="md:col-span-2 text-sm"></p>
+ </form></div></div>
+<script>
+// Paste your existing Supabase Project URL and anon/public key here. NEVER use service_role key in browser code.
+const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_PROJECT_URL';
+const SUPABASE_ANON_KEY = 'PASTE_YOUR_SUPABASE_ANON_PUBLIC_KEY';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+let products = [];
+function money(value,currency){return new Intl.NumberFormat('en-US',{style:'currency',currency:currency||'BDT',maximumFractionDigits:2}).format(Number(value||0));}
+function showLogin(){ $('loginView').classList.remove('hidden'); $('appView').classList.add('hidden'); }
+function showApp(user){ $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden'); $('adminEmail').textContent=user.email||''; loadProducts(); }
+async function checkAdmin(){const {data:{session}}=await db.auth.getSession();if(!session){showLogin();return;}const {data:role,error}=await db.from('user_roles').select('role').eq('user_id',session.user.id).maybeSingle();if(error||!role||role.role!=='admin'){await db.auth.signOut();$('loginMsg').textContent='এই অ্যাকাউন্টের Admin permission নেই।';showLogin();return;}showApp(session.user);}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginMsg').textContent='Signing in...';const {data,error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error){$('loginMsg').textContent=error.message;return;}const {data:role}=await db.from('user_roles').select('role').eq('user_id',data.user.id).maybeSingle();if(role?.role!=='admin'){await db.auth.signOut();$('loginMsg').textContent='এই user-এর admin role নেই।';return;}showApp(data.user);});
+$('logoutBtn').onclick=async()=>{await db.auth.signOut();showLogin();};
+async function loadProducts(){ $('tableMsg').textContent='Loading...';const {data,error}=await db.from('products').select('*').order('created_at',{ascending:false});if(error){$('tableMsg').textContent='Database error: '+error.message;return;}products=data||[];render();}
+function render(){const q=$('search').value.toLowerCase();const list=products.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q));$('totalCount').textContent=products.length;$('activeCount').textContent=products.filter(p=>p.active).length;$('featuredCount').textContent=products.filter(p=>p.featured).length;$('productRows').innerHTML=list.map(p=>`<tr class="border-b"><td class="p-3"><div class="font-semibold">${esc(p.name)}</div><div class="text-xs text-slate-400">${esc(p.marketplace||'')}</div></td><td class="p-3">${esc(p.category||'')}</td><td class="p-3 font-semibold">${money(p.price,p.currency)}</td><td class="p-3">${p.active?'🟢 Active':'⚪ Draft'}</td><td class="p-3 whitespace-nowrap"><button data-edit="${p.id}" class="text-indigo-600 font-semibold mr-3">Edit</button><button data-delete="${p.id}" class="text-rose-600">Delete</button></td></tr>`).join('');$('tableMsg').textContent=list.length?'':'No products found';document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editProduct(b.dataset.edit));document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteProduct(b.dataset.delete));}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+$('search').oninput=render;
+function openModal(){ $('productModal').classList.remove('hidden'); }
+function closeModal(){ $('productModal').classList.add('hidden'); $('productForm').reset();$('productId').value='';$('active').checked=true;$('rating').value='4.8';$('formMsg').textContent='';$('modalTitle').textContent='Add product'; }
+$('newBtn').onclick=()=>{closeModal();openModal();};$('closeModal').onclick=closeModal;$('cancelBtn').onclick=closeModal;
+function editProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return;closeModal();$('modalTitle').textContent='Edit product';$('productId').value=p.id;$('name').value=p.name||'';$('category').value=p.category||'Other';$('price').value=p.price??'';$('currency').value=p.currency||'BDT';$('oldPrice').value=p.old_price??'';$('badge').value=p.badge||'';$('imageUrl').value=p.image_url||'';$('affiliateUrl').value=p.affiliate_url||'';$('marketplace').value=p.marketplace||'';$('rating').value=p.rating??4.8;$('description').value=p.description||'';$('verdict').value=p.verdict||'';$('highlights').value=Array.isArray(p.highlights)?p.highlights.join(', '):'';$('featured').checked=!!p.featured;$('active').checked=!!p.active;openModal();}
+$('productForm').addEventListener('submit',async e=>{e.preventDefault();$('formMsg').textContent='Saving...';const payload={name:$('name').value.trim(),category:$('category').value,price:Number($('price').value),currency:$('currency').value,old_price:$('oldPrice').value===''?null:Number($('oldPrice').value),badge:$('badge').value.trim(),image_url:$('imageUrl').value.trim(),affiliate_url:$('affiliateUrl').value.trim(),marketplace:$('marketplace').value.trim()||'Other',rating:Number($('rating').value||0),description:$('description').value.trim(),verdict:$('verdict').value.trim(),highlights:$('highlights').value.split(',').map(x=>x.trim()).filter(Boolean),featured:$('featured').checked,active:$('active').checked};const id=$('productId').value;let result=id?await db.from('products').update(payload).eq('id',id):await db.from('products').insert(payload);if(result.error){$('formMsg').textContent='Error: '+result.error.message;$('formMsg').className='md:col-span-2 text-sm text-rose-600';return;}$('formMsg').textContent='Saved successfully';$('formMsg').className='md:col-span-2 text-sm text-emerald-600';await loadProducts();setTimeout(closeModal,500);});
+async function deleteProduct(id){if(!confirm('এই product delete করতে চান?'))return;const {error}=await db.from('products').delete().eq('id',id);if(error){alert(error.message);return;}await loadProducts();}
+checkAdmin();
+</script>
+</body></html>
