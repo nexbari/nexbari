@@ -239,11 +239,6 @@
         <div class="relative pb-6 border-b border-slate-200">
             <div class="flex flex-wrap items-center justify-between gap-3">
                 <div class="flex flex-wrap items-center gap-2.5">
-                    <!-- All Categories Button -->
-                    <button id="allCatBtn" onclick="filterByCategory('All')" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-brand-600 text-white shadow-sm transition flex items-center gap-2">
-                        <i class="fa-solid fa-border-all"></i> All Categories
-                    </button>
-
                     <!-- Category Selector Button (Opens Full Category List) -->
                     <div class="relative" id="categoryDropdownWrapper">
                         <button type="button" onclick="toggleCategoryMenu()" id="categoryMenuBtn" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-center gap-2.5 shadow-sm">
@@ -901,19 +896,14 @@
             activeCategory = category;
             toggleCategoryMenu(false);
 
-            const allBtn = document.getElementById('allCatBtn');
             const menuBtn = document.getElementById('categoryMenuBtn');
             const labelEl = document.getElementById('selectedCategoryLabel');
 
             if (category === 'All') {
-                allBtn.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
-                allBtn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
                 menuBtn.classList.remove('border-brand-600', 'bg-brand-50', 'text-brand-700');
                 menuBtn.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
                 labelEl.textContent = 'Categories';
             } else {
-                allBtn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
-                allBtn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
                 menuBtn.classList.add('border-brand-600', 'bg-brand-50', 'text-brand-700');
                 menuBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-200');
                 labelEl.textContent = category;
