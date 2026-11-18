@@ -17,11 +17,18 @@
  </form>
 </div>
 <div id="appView" class="hidden min-h-screen">
- <header class="bg-slate-950 text-white px-5 py-4 flex justify-between items-center"><div><b class="text-xl">NEXBARI</b><span class="text-slate-400 text-sm ml-3">Admin Panel</span></div><div class="flex items-center gap-3"><span id="adminEmail" class="text-xs text-slate-300"></span><button id="logoutBtn" class="bg-white/10 px-3 py-2 rounded-lg text-sm">Logout</button></div></header>
+ <header class="bg-slate-950 text-white px-5 py-4 flex justify-between items-center">
+  <div><b class="text-xl">NEXBARI</b><span class="text-slate-400 text-sm ml-3">Admin Panel</span></div>
+  <div class="flex items-center gap-3">
+   <a href="index.html" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-lg text-xs font-semibold">View Website &rarr;</a>
+   <span id="adminEmail" class="text-xs text-slate-300 hidden sm:inline"></span>
+   <button id="logoutBtn" class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg text-sm">Logout</button>
+  </div>
+ </header>
  <main class="max-w-7xl mx-auto p-4 md:p-7">
-  <div class="flex flex-wrap justify-between items-center gap-3 mb-6"><div><h1 class="text-2xl font-black">Product Management</h1><p class="text-sm text-slate-500">Add, edit and publish products to your customer website</p></div><button id="newBtn" class="bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-semibold">+ Add Product</button></div>
-  <div class="grid sm:grid-cols-3 gap-4 mb-6"><div class="bg-white p-5 rounded-2xl"><div class="text-sm text-slate-500">Total products</div><div id="totalCount" class="text-3xl font-black">0</div></div><div class="bg-white p-5 rounded-2xl"><div class="text-sm text-slate-500">Active products</div><div id="activeCount" class="text-3xl font-black">0</div></div><div class="bg-white p-5 rounded-2xl"><div class="text-sm text-slate-500">Featured products</div><div id="featuredCount" class="text-3xl font-black">0</div></div></div>
-  <div class="bg-white rounded-2xl p-4 md:p-6 overflow-x-auto"><div class="flex justify-between gap-3 mb-4"><h2 class="font-bold">Products</h2><input id="search" placeholder="Search products..." class="border rounded-lg px-3 py-2 text-sm"></div><table class="w-full text-sm text-left"><thead><tr class="border-b text-slate-500"><th class="p-3">Product</th><th class="p-3">Category</th><th class="p-3">Price</th><th class="p-3">Status</th><th class="p-3">Actions</th></tr></thead><tbody id="productRows"></tbody></table><p id="tableMsg" class="text-sm text-slate-500 py-5">Loading...</p></div>
+  <div class="flex flex-wrap justify-between items-center gap-3 mb-6"><div><h1 class="text-2xl font-black">Product Management</h1><p class="text-sm text-slate-500">Add, edit and publish products directly to your customer website</p></div><button id="newBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-semibold">+ Add Product</button></div>
+  <div class="grid sm:grid-cols-3 gap-4 mb-6"><div class="bg-white p-5 rounded-2xl shadow-sm"><div class="text-sm text-slate-500">Total products</div><div id="totalCount" class="text-3xl font-black">0</div></div><div class="bg-white p-5 rounded-2xl shadow-sm"><div class="text-sm text-slate-500">Active products</div><div id="activeCount" class="text-3xl font-black">0</div></div><div class="bg-white p-5 rounded-2xl shadow-sm"><div class="text-sm text-slate-500">Featured products</div><div id="featuredCount" class="text-3xl font-black">0</div></div></div>
+  <div class="bg-white rounded-2xl p-4 md:p-6 overflow-x-auto shadow-sm"><div class="flex justify-between gap-3 mb-4"><h2 class="font-bold">Products</h2><input id="search" placeholder="Search products..." class="border rounded-lg px-3 py-2 text-sm"></div><table class="w-full text-sm text-left"><thead><tr class="border-b text-slate-500"><th class="p-3">Product</th><th class="p-3">Category</th><th class="p-3">Price</th><th class="p-3">Status</th><th class="p-3">Actions</th></tr></thead><tbody id="productRows"></tbody></table><p id="tableMsg" class="text-sm text-slate-500 py-5">Loading...</p></div>
  </main>
 </div>
 <div id="productModal" class="hidden fixed inset-0 bg-slate-950/60 z-20 p-3 overflow-y-auto"><div class="bg-white max-w-3xl mx-auto my-5 rounded-2xl p-6">
@@ -43,12 +50,11 @@
   <label class="text-sm font-semibold md:col-span-2">Short description<textarea id="description" rows="3" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></textarea></label>
   <label class="text-sm font-semibold md:col-span-2">Review verdict<textarea id="verdict" rows="2" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></textarea></label>
   <label class="text-sm font-semibold md:col-span-2">Highlights (comma separated)<input id="highlights" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
-  <div class="md:col-span-2 flex flex-wrap gap-5"><label class="text-sm"><input id="featured" type="checkbox" class="mr-2">Featured product</label><label class="text-sm"><input id="active" type="checkbox" checked class="mr-2">Publish / Active</label></div>
+  <div class="md:col-span-2 flex flex-wrap gap-5"><label class="text-sm"><input id="featured" type="checkbox" class="mr-2">Featured product (Deal of the Day)</label><label class="text-sm"><input id="active" type="checkbox" checked class="mr-2">Publish / Active</label></div>
   <div class="md:col-span-2 flex justify-end gap-3"><button type="button" id="cancelBtn" class="border px-4 py-2 rounded-lg">Cancel</button><button class="bg-indigo-600 text-white px-5 py-2 rounded-lg font-bold">Save product</button></div>
   <p id="formMsg" class="md:col-span-2 text-sm"></p>
  </form></div></div>
 <script>
-// Paste your existing Supabase Project URL and anon/public key here. NEVER use service_role key in browser code.
 const SUPABASE_URL = 'https://qusfiwelalnowycozchb.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_rSi58hS-FK8myU9ylWl-rA_wzPopywo';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
