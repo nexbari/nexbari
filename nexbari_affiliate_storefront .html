@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXBARI — Curated Deals, Top Reviews & Smart Shopping Hub</title>
+    <meta name="description" content="Discover the best deals, honest reviews, and trending products curated across top categories on NEXBARI.">
+    
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#1e1b4b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom subtle scrollbar & utilities */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .ad-slot-pattern {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white">
+
+    <!-- ==================== TOP ANNOUNCEMENT BAR ==================== -->
+    <div class="bg-slate-900 text-white text-xs sm:text-sm py-2 px-4 text-center">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-2">
+            <span class="bg-amber-500 text-slate-950 font-bold px-2 py-0.5 rounded text-[11px] uppercase tracking-wider">Hot Deals</span>
+            <span>Daily curated discounts, verified reviews & exclusive online offers!</span>
+            <a href="#deals-section" class="underline text-amber-400 hover:text-amber-300 font-medium ml-1">Explore Today's Picks &rarr;</a>
+        </div>
+    </div>
+
+    <!-- ==================== STICKY HEADER & NAVIGATION ==================== -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+                
+                <!-- Brand Logo: NEXBARI -->
+                <a href="#" onclick="resetFilters()" class="flex items-center gap-2.5 shrink-0 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 to-indigo-800 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">
+                            NEX<span class="text-brand-600">BARI</span>
+                        </span>
+                        <span class="block text-[10px] font-medium text-slate-400 -mt-1 tracking-widest uppercase">Smart Deals Hub</span>
+                    </div>
+                </a>
+
+                <!-- Real-Time Search Bar -->
+                <div class="flex-1 max-w-xl hidden md:block">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="searchInputDesktop" 
+                            oninput="handleSearch(this.value)"
+                            placeholder="Search gadgets, fashion, digital tools, home deals..." 
+                            class="w-full pl-11 pr-4 py-2.5 bg-slate-100 border border-transparent focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 rounded-xl text-sm transition-all outline-none"
+                        >
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    </div>
+                </div>
+
+                <!-- Quick Niche Shortcuts (Desktop) -->
+                <div class="hidden lg:flex items-center gap-2">
+                    <button onclick="filterByCategory('Tech & Gadgets')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition">Tech</button>
+                    <button onclick="filterByCategory('Fashion')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition">Fashion</button>
+                    <button onclick="filterByCategory('Home & Living')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition">Home</button>
+                    <a href="#deals-section" class="ml-1 px-4 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white hover:bg-brand-700 shadow-sm transition">
+                        Today's Deals
+                    </a>
+                </div>
+
+                <!-- Mobile Search Toggle / CTA -->
+                <div class="flex items-center gap-2 md:hidden">
+                    <a href="#deals-section" class="px-3.5 py-2 bg-brand-600 text-white text-xs font-semibold rounded-xl shadow-sm">
+                        Top Deals
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Search Input -->
+            <div class="pb-3 md:hidden">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchInputMobile" 
+                        oninput="handleSearch(this.value)"
+                        placeholder="Search top-rated products & deals..." 
+                        class="w-full pl-10 pr-4 py-2 bg-slate-100 border border-slate-200 focus:bg-white focus:border-brand-500 rounded-xl text-sm outline-none"
+                    >
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO SECTION & DEAL OF THE DAY ==================== -->
+    <section class="bg-gradient-to-b from-indigo-50/80 via-white to-slate-50 pt-8 pb-6 border-b border-slate-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Left Hero Content -->
+                <div class="lg:col-span-7 space-y-5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-100/80 text-brand-700 text-xs font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-brand-600 animate-pulse"></span>
+                        All-in-One Multi-Niche Review & Deals Portal
+                    </div>
+                    <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-slate-900 leading-tight">
+                        Find Top-Rated Products & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-indigo-500">Verified Deals</span> in One Place.
+                    </h1>
+                    <p class="text-slate-600 text-base sm:text-lg max-w-2xl leading-relaxed">
+                        Welcome to <strong>NEXBARI</strong>. We research, compare, and handpick the highest-value tech gadgets, fashion, home essentials, beauty care, and digital tools at the best available prices.
+                    </p>
+                    
+                    <!-- Niche Quick Jump Pills -->
+                    <div class="pt-2">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2.5">Browse Popular Categories:</p>
+                        <div class="flex flex-wrap gap-2.5">
+                            <button onclick="filterByCategory('All')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-900 text-white shadow-sm hover:bg-slate-800 transition">
+                                All Picks
+                            </button>
+                            <button onclick="filterByCategory('Tech & Gadgets')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:border-brand-400 hover:bg-brand-50 transition flex items-center gap-2">
+                                <i class="fa-solid fa-microchip text-brand-600"></i> Tech & Gadgets
+                            </button>
+                            <button onclick="filterByCategory('Fashion')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:border-pink-400 hover:bg-pink-50 transition flex items-center gap-2">
+                                <i class="fa-solid fa-shirt text-pink-600"></i> Fashion
+                            </button>
+                            <button onclick="filterByCategory('Home & Living')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:border-amber-400 hover:bg-amber-50 transition flex items-center gap-2">
+                                <i class="fa-solid fa-couch text-amber-600"></i> Home & Living
+                            </button>
+                            <button onclick="filterByCategory('Digital & Software')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50 transition flex items-center gap-2">
+                                <i class="fa-solid fa-laptop-code text-emerald-600"></i> Digital & Software
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Deal of the Day Spotlight Card -->
+                <div class="lg:col-span-5" id="featuredSpotlightContainer">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-5 sm:p-6 relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="inline-flex items-center gap-1.5 bg-rose-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                                <i class="fa-solid fa-fire"></i> DEAL OF THE DAY
+                            </span>
+                            <div class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                                Ends in: <span id="dealCountdown" class="text-rose-600 font-bold">08:42:19</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 items-center">
+                            <img 
+                                id="spotlightImg"
+                                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" 
+                                onerror="this.src='https://placehold.co/400x300/e2e8f0/475569?text=Top+Deal'"
+                                alt="Featured Deal" 
+                                class="w-full sm:w-36 h-36 object-cover rounded-xl bg-slate-100 shrink-0"
+                            >
+                            <div class="space-y-2 text-center sm:text-left">
+                                <div class="flex items-center justify-center sm:justify-start gap-2">
+                                    <span id="spotlightBadge" class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">Editor's Pick</span>
+                                    <span id="spotlightRating" class="text-xs text-amber-500 font-semibold"><i class="fa-solid fa-star"></i> 4.9 (2.4k)</span>
+                                </div>
+                                <h3 id="spotlightTitle" class="font-bold text-slate-900 text-base leading-snug">
+                                    Sony WH-1000XM5 Wireless Noise Cancelling Headphones
+                                </h3>
+                                <div class="flex items-baseline justify-center sm:justify-start gap-2">
+                                    <span id="spotlightPrice" class="text-xl font-extrabold text-brand-600">$328.00</span>
+                                    <span id="spotlightOldPrice" class="text-sm text-slate-400 line-through">$399.99</span>
+                                    <span id="spotlightDiscount" class="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">-18% OFF</span>
+                                </div>
+                                <a id="spotlightBtn" href="https://example.com/affiliate-link-1" onclick="trackProductClick(1)" target="_blank" rel="nofollow sponsored" class="mt-2 w-full inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl transition shadow-sm">
+                                    Buy Now <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         AD SLOT #1: TOP LEADERBOARD BANNER (728x90 / Responsive)
+         Paste your Google AdSense or Adsterra/PropellerAds script inside below
+         ========================================================================= -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
+        <div class="w-full rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
+            <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
+            
+            <!-- PASTE GOOGLE ADSENSE / TOP LEADERBOARD BANNER CODE HERE -->
+            <div id="ad-slot-top-leaderboard" class="min-h-[90px] max-w-[728px] mx-auto bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-3 text-slate-400 overflow-hidden">
+                <p class="text-xs font-semibold text-slate-500">Top Leaderboard Ad Space (728x90 / Responsive)</p>
+                <p class="text-[11px] text-slate-400">Manage via Admin Dashboard or paste your AdSense code here</p>
+            </div>
+            <!-- END AD SLOT #1 -->
+
+        </div>
+    </div>
+
+    <!-- ==================== MAIN CATALOG & SIDEBAR LAYOUT ==================== -->
+    <main id="deals-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        <!-- Multi-Niche Category Filter Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="categoryPills">
+                <button onclick="filterByCategory('All')" class="cat-pill active shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-brand-600 text-white shadow-sm transition">
+                    All Niches
+                </button>
+                <button onclick="filterByCategory('Tech & Gadgets')" class="cat-pill shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-microchip mr-1.5 text-brand-500"></i> Tech & Gadgets
+                </button>
+                <button onclick="filterByCategory('Fashion')" class="cat-pill shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-shirt mr-1.5 text-pink-500"></i> Fashion
+                </button>
+                <button onclick="filterByCategory('Home & Living')" class="cat-pill shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-couch mr-1.5 text-amber-500"></i> Home & Living
+                </button>
+                <button onclick="filterByCategory('Beauty & Health')" class="cat-pill shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-spa mr-1.5 text-rose-500"></i> Beauty & Health
+                </button>
+                <button onclick="filterByCategory('Digital & Software')" class="cat-pill shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-graduation-cap mr-1.5 text-emerald-500"></i> Digital & Software
+                </button>
+                <button onclick="filterByCategory('Deals')" class="cat-pill shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-bolt mr-1.5 text-amber-500"></i> Deals
+                </button>
+            </div>
+
+            <!-- Active Filter Status & Sort -->
+            <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                <span id="productCountText" class="text-xs font-medium text-slate-500">Showing 8 products</span>
+                <select id="sortSelect" onchange="handleSort(this.value)" class="text-xs font-semibold bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-700 outline-none focus:border-brand-500">
+                    <option value="featured">Sort: Featured</option>
+                    <option value="rating">Top Rated</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Content Grid: 9 Columns Products + 3 Columns Sticky Sidebar (with Ad Slots) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
+            
+            <!-- LEFT/MAIN COLUMN: Product Cards Grid -->
+            <div class="lg:col-span-9">
+                <!-- Products Container -->
+                <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Products are dynamically injected via JavaScript below -->
+                </div>
+
+                <!-- Empty Search State -->
+                <div id="emptyState" class="hidden bg-white rounded-2xl border border-slate-200 p-12 text-center my-6">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400 text-2xl">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900">No matching products found</h3>
+                    <p class="text-sm text-slate-500 mt-1 mb-4">Try clearing your filters or searching for another keyword.</p>
+                    <button onclick="resetFilters()" class="px-5 py-2.5 bg-brand-600 text-white text-sm font-semibold rounded-xl hover:bg-brand-700 transition">
+                        Reset All Filters
+                    </button>
+                </div>
+
+                <!-- =========================================================================
+                     AD SLOT #2: IN-FEED / MID-PAGE HORIZONTAL BANNER AD
+                     ========================================================================= -->
+                <div class="my-8 rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-4 text-center">
+                    <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
+                    
+                    <!-- PASTE GOOGLE ADSENSE IN-FEED / HORIZONTAL BANNER CODE HERE -->
+                    <div id="ad-slot-infeed" class="min-h-[110px] bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-4 text-slate-400 overflow-hidden">
+                        <p class="text-xs font-semibold text-slate-500">In-Feed Horizontal Banner Ad (Responsive)</p>
+                        <p class="text-[11px] text-slate-400">Manage via Admin Dashboard or paste Google AdSense code here</p>
+                    </div>
+                    <!-- END AD SLOT #2 -->
+                </div>
+
+                <!-- Buying Guides / Comparison Section (Great for SEO & AdSense Approval!) -->
+                <section class="mt-10 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-brand-600">NEXBARI Buying Guides</span>
+                            <h2 class="font-display font-bold text-xl sm:text-2xl text-slate-900 mt-1">How We Pick & Review Products</h2>
+                        </div>
+                        <span class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg">
+                            <i class="fa-solid fa-shield-check"></i> 100% Unbiased Research
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold mb-3">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-sm mb-1">1. Thorough Price & Quality Check</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">We compare specifications, seller reliability, and historical pricing across trusted retailers before featuring any deal.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="w-9 h-9 rounded-lg bg-brand-100 text-brand-700 flex items-center justify-center font-bold mb-3">
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-sm mb-1">2. Verified Buyer Feedback</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Only products with 4.5+ average stars and verified customer reviews make it to the NEXBARI storefront.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold mb-3">
+                                <i class="fa-solid fa-tags"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-sm mb-1">3. Zero Extra Cost to You</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Clicking our Buy Now buttons takes you directly to the official checkout page at the exact same (or discounted) price.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- RIGHT SIDEBAR: Sticky Ad Slots & Popular Niches -->
+            <aside class="lg:col-span-3 space-y-6">
+                <div class="sticky top-24 space-y-6">
+                    
+                    <!-- =========================================================================
+                         AD SLOT #3: SIDEBAR STICKY AD (300x250 / 300x600)
+                         ========================================================================= -->
+                    <div class="rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
+                        <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
+                        
+                        <!-- PASTE GOOGLE ADSENSE SIDEBAR SQUARE/VERTICAL CODE HERE -->
+                        <div id="ad-slot-sidebar" class="min-h-[250px] bg-white/90 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-4 text-slate-400 overflow-hidden">
+                            <i class="fa-solid fa-rectangle-ad text-2xl text-slate-300 mb-2"></i>
+                            <p class="text-xs font-semibold text-slate-500">Sidebar Ad Slot (300x250)</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Manage via Admin Dashboard or paste code</p>
+                        </div>
+                        <!-- END AD SLOT #3 -->
+                    </div>
+
+                    <!-- Explore Top Categories Card -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <h3 class="font-display font-bold text-slate-900 text-base mb-3">Explore Top Categories</h3>
+                        <ul class="space-y-2.5 text-sm">
+                            <li>
+                                <button onclick="filterByCategory('Tech & Gadgets')" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition">
+                                    <span class="font-semibold text-slate-800 flex items-center gap-2">
+                                        <i class="fa-solid fa-microchip text-brand-600 w-4"></i> Tech & Gadgets
+                                    </span>
+                                    <span class="text-xs text-slate-400">&rarr;</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="filterByCategory('Fashion')" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-pink-50 border border-slate-100 hover:border-pink-200 transition">
+                                    <span class="font-semibold text-slate-800 flex items-center gap-2">
+                                        <i class="fa-solid fa-shirt text-pink-600 w-4"></i> Fashion & Apparel
+                                    </span>
+                                    <span class="text-xs text-slate-400">&rarr;</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="filterByCategory('Home & Living')" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-100 hover:border-amber-200 transition">
+                                    <span class="font-semibold text-slate-800 flex items-center gap-2">
+                                        <i class="fa-solid fa-couch text-amber-600 w-4"></i> Home & Living
+                                    </span>
+                                    <span class="text-xs text-slate-400">&rarr;</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="filterByCategory('Beauty & Health')" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-100 hover:border-rose-200 transition">
+                                    <span class="font-semibold text-slate-800 flex items-center gap-2">
+                                        <i class="fa-solid fa-spa text-rose-600 w-4"></i> Beauty & Health
+                                    </span>
+                                    <span class="text-xs text-slate-400">&rarr;</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="filterByCategory('Digital & Software')" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 transition">
+                                    <span class="font-semibold text-slate-800 flex items-center gap-2">
+                                        <i class="fa-solid fa-laptop-code text-emerald-600 w-4"></i> Digital & Software
+                                    </span>
+                                    <span class="text-xs text-slate-400">&rarr;</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Newsletter Box -->
+                    <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-5 text-white shadow-md">
+                        <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-brand-500/30 text-brand-200 px-2.5 py-1 rounded-md mb-2">Weekly Price Drops</span>
+                        <h3 class="font-display font-bold text-lg leading-snug">Get Secret Promo Codes</h3>
+                        <p class="text-xs text-slate-300 mt-1 mb-4">Join 5,000+ smart shoppers receiving weekly coupon alerts.</p>
+                        <form onsubmit="handleNewsletter(event)" class="space-y-2.5">
+                            <input type="email" required placeholder="Enter your email..." class="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-white placeholder-slate-400 text-xs outline-none focus:border-brand-400">
+                            <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs rounded-xl transition">
+                                Subscribe Free
+                            </button>
+                        </form>
+                        <p id="newsletterMsg" class="hidden text-xs text-emerald-400 mt-2 font-medium"></p>
+                    </div>
+
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- =========================================================================
+         AD SLOT #4: BOTTOM FOOTER BANNER AD
+         ========================================================================= -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+        <div class="w-full rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
+            <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
+            
+            <!-- PASTE GOOGLE ADSENSE FOOTER BANNER CODE HERE -->
+            <div id="ad-slot-footer" class="min-h-[90px] max-w-[970px] mx-auto bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-3 text-slate-400 overflow-hidden">
+                <p class="text-xs font-semibold text-slate-500">Footer Multiplex / Leaderboard Ad Space (970x90 / Responsive)</p>
+                <p class="text-[11px] text-slate-400">Manage via Admin Dashboard or paste AdSense script here</p>
+            </div>
+            <!-- END AD SLOT #4 -->
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER & AFFILIATE DISCLOSURE ==================== -->
+    <footer class="bg-slate-900 text-slate-300 pt-12 pb-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-slate-800">
+                
+                <!-- Brand Info -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <span class="font-display font-extrabold text-xl text-white">NEX<span class="text-brand-400">BARI</span></span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        NEXBARI is your trusted multi-niche product discovery and deals platform. We help shoppers find the best value across top global and local retailers.
+                    </p>
+                    <div class="flex items-center gap-3 pt-1">
+                        <a href="#" aria-label="Facebook" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-brand-600 flex items-center justify-center text-slate-300 hover:text-white transition"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                        <a href="#" aria-label="YouTube" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-rose-600 flex items-center justify-center text-slate-300 hover:text-white transition"><i class="fa-brands fa-youtube text-xs"></i></a>
+                        <a href="#" aria-label="Instagram" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-pink-600 flex items-center justify-center text-slate-300 hover:text-white transition"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    </div>
+                </div>
+
+                <!-- Top Categories -->
+                <div>
+                    <h4 class="font-bold text-white text-sm mb-3">Popular Niches</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><button onclick="filterByCategory('Tech & Gadgets')" class="hover:text-white transition">Tech & Smart Gadgets</button></li>
+                        <li><button onclick="filterByCategory('Fashion')" class="hover:text-white transition">Men & Women Fashion</button></li>
+                        <li><button onclick="filterByCategory('Home & Living')" class="hover:text-white transition">Home & Kitchen Essentials</button></li>
+                        <li><button onclick="filterByCategory('Beauty & Health')" class="hover:text-white transition">Beauty, Health & Skincare</button></li>
+                        <li><button onclick="filterByCategory('Digital & Software')" class="hover:text-white transition">Digital & Software Tools</button></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold text-white text-sm mb-3">Quick Navigation</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="#deals-section" class="hover:text-white transition">Today's Featured Deals</a></li>
+                        <li><button onclick="handleSort('rating'); document.getElementById('deals-section').scrollIntoView({behavior:'smooth'});" class="hover:text-white transition">Top Rated Products</button></li>
+                        <li><button onclick="handleSort('price-low'); document.getElementById('deals-section').scrollIntoView({behavior:'smooth'});" class="hover:text-white transition">Budget Picks Under $50</button></li>
+                        <li><a href="#disclosure" class="hover:text-white transition">How We Review</a></li>
+                    </ul>
+                </div>
+
+                <!-- Site Owner Tools & Policies -->
+                <div>
+                    <h4 class="font-bold text-white text-sm mb-3">Site Owner & Legal</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li>
+                            <button onclick="openAdminAccess()" class="text-brand-400 hover:text-brand-300 font-semibold flex items-center gap-1.5">
+                                <i class="fa-solid fa-gauge-high"></i> Admin Login / Dashboard
+                            </button>
+                        </li>
+                        <li><a href="#disclosure" class="hover:text-white transition">Affiliate Disclosure</a></li>
+                        <li><a href="#disclosure" class="hover:text-white transition">Privacy Policy & Cookies</a></li>
+                        <li><a href="#disclosure" class="hover:text-white transition">Terms of Use</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mandatory Affiliate Disclosure Box (No Marketplace Names) -->
+            <div id="disclosure" class="mt-6 p-4 rounded-xl bg-slate-800/70 border border-slate-700/80 text-[11px] text-slate-400 leading-relaxed">
+                <strong class="text-slate-200">Affiliate Disclosure:</strong> NEXBARI participates in select affiliate marketing programs. This means we may earn a small commission when you click on our partner links and make a qualifying purchase—at <strong>zero additional cost to you</strong>. Product prices, discounts, and availability are accurate as of the time posted and are subject to change on the official merchant site.
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+                <p>&copy; <span id="yearSpan"></span> NEXBARI. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <span>Curated Multi-Niche Reviews & Smart Deals Hub</span>
+                    <button onclick="openAdminAccess()" class="text-slate-500 hover:text-slate-300 underline transition">Owner Panel</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== QUICK REVIEW MODAL ==================== -->
+    <div id="reviewModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
+            <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
+                <span id="modalHighlightBadge" class="text-xs font-bold px-2.5 py-1 rounded-lg">Top Rated</span>
+                <button onclick="closeReviewModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-5">
+                <div class="flex flex-col sm:flex-row gap-5 items-center sm:items-start">
+                    <img id="modalImage" src="" alt="Product" class="w-40 h-40 object-cover rounded-xl bg-slate-100 border border-slate-200 shrink-0">
+                    <div class="space-y-2 text-center sm:text-left">
+                        <span id="modalCategory" class="text-xs font-semibold text-brand-600 uppercase tracking-wider">Category</span>
+                        <h3 id="modalTitle" class="font-display font-bold text-xl text-slate-900 leading-snug">Product Title</h3>
+                        <div class="flex items-center justify-center sm:justify-start gap-2 text-sm">
+                            <span id="modalRating" class="text-amber-500 font-bold"></span>
+                            <span id="modalReviews" class="text-slate-400 text-xs"></span>
+                        </div>
+                        <div class="flex items-baseline justify-center sm:justify-start gap-2 pt-1">
+                            <span id="modalPrice" class="text-2xl font-extrabold text-slate-900"></span>
+                            <span id="modalOldPrice" class="text-sm text-slate-400 line-through"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pros & Cons Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-xl p-4">
+                        <h4 class="font-bold text-emerald-900 text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check text-emerald-600"></i> Why We Like It (Pros)
+                        </h4>
+                        <ul id="modalPros" class="space-y-1.5 text-xs text-emerald-900"></ul>
+                    </div>
+                    <div class="bg-rose-50/70 border border-rose-200/80 rounded-xl p-4">
+                        <h4 class="font-bold text-rose-900 text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-exclamation text-rose-600"></i> Things to Note (Cons)
+                        </h4>
+                        <ul id="modalCons" class="space-y-1.5 text-xs text-rose-900"></ul>
+                    </div>
+                </div>
+
+                <!-- Editor's Verdict -->
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
+                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">NEXBARI Editor's Verdict</h4>
+                    <p id="modalVerdict" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
+                </div>
+
+                <!-- CTA Button: Buy Now -->
+                <div class="pt-2">
+                    <a id="modalBuyBtn" href="#" target="_blank" rel="nofollow sponsored" class="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-brand-600 hover:bg-brand-700 flex items-center justify-center gap-2 shadow-lg shadow-brand-600/20 transition">
+                        <span>Buy Now</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                    <p class="text-[11px] text-center text-slate-400 mt-2">Redirects safely to the official offer page at no extra cost.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ADMIN LOGIN MODAL ==================== -->
+    <div id="adminLoginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center">
+                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-lg">NEXBARI Admin Access</h3>
+                        <p class="text-xs text-slate-400">Product & Ad Slot Management</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminLogin()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleAdminLogin(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Enter Admin PIN / Password</label>
+                    <input 
+                        type="password" 
+                        id="adminPinInput" 
+                        required 
+                        placeholder="••••••••" 
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 outline-none text-sm font-mono"
+                    >
+                    <p id="loginErrorMsg" class="hidden text-xs text-rose-600 font-semibold mt-1.5">Incorrect PIN! Please try again.</p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-amber-50 border border-amber-200/80 text-xs text-amber-900 flex items-start gap-2">
+                    <i class="fa-solid fa-circle-info text-amber-600 mt-0.5"></i>
+                    <div>
+                        <strong>Default Demo PIN:</strong> <code class="bg-white px-1.5 py-0.5 rounded border border-amber-300 font-bold">admin123</code>
+                        <span class="block text-[11px] text-amber-700 mt-0.5">You can change this PIN anytime inside the Dashboard Settings tab.</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Unlock Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== FULL-SCREEN ADMIN PANEL & PRODUCT MANAGEMENT DASHBOARD ==================== -->
+    <div id="adminDashboardOverlay" class="fixed inset-0 z-50 hidden bg-slate-100 overflow-y-auto">
+        
+        <!-- Top Admin Navbar -->
+        <header class="sticky top-0 z-30 bg-slate-900 text-white border-b border-slate-800 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-extrabold text-lg tracking-tight">NEX<span class="text-brand-400">BARI</span> <span class="text-xs font-semibold bg-slate-800 text-brand-300 px-2 py-0.5 rounded-md ml-1">Admin Dashboard</span></span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="closeAdminDashboard()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Live Site
+                    </button>
+                    <button onclick="logoutAdmin()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white text-xs font-semibold transition" title="Lock & Logout">
+                        <i class="fa-solid fa-lock"></i> <span class="hidden sm:inline">Lock</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Main Container -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+            <!-- Toast Notification inside Dashboard -->
+            <div id="adminToast" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 text-xs font-semibold flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                <span id="adminToastText">Changes saved!</span>
+            </div>
+
+            <!-- 1. DASHBOARD OVERVIEW METRICS -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-500">Total Products</span>
+                        <span class="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"><i class="fa-solid fa-box-open"></i></span>
+                    </div>
+                    <p id="statTotalProducts" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">8</p>
+                    <p class="text-[11px] text-emerald-600 font-medium mt-1">Live on storefront</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-500">Active Categories</span>
+                        <span class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-layer-group"></i></span>
+                    </div>
+                    <p id="statActiveCategories" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">6</p>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1">Multi-niche coverage</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-500">Total 'Buy Now' Clicks</span>
+                        <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-arrow-pointer"></i></span>
+                    </div>
+                    <p id="statTotalClicks" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">0</p>
+                    <p class="text-[11px] text-emerald-600 font-medium mt-1">Tracked in real-time</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-500">Ad Slots Status</span>
+                        <span class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-rectangle-ad"></i></span>
+                    </div>
+                    <p id="statAdSlots" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">4 / 4</p>
+                    <p class="text-[11px] text-purple-600 font-medium mt-1">Ready for monetization</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Sub-Navigation Tabs -->
+            <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
+                <button onclick="switchAdminTab('products')" id="tabBtn-products" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked"></i> Product Manager
+                </button>
+                <button onclick="switchAdminTab('ads')" id="tabBtn-ads" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
+                    <i class="fa-solid fa-code"></i> Ad Slot Manager
+                </button>
+                <button onclick="switchAdminTab('backup')" id="tabBtn-backup" class="admin-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
+                    <i class="fa-solid fa-database"></i> Data Backup & Static Export
+                </button>
+            </div>
+
+            <!-- ==================== TAB 1: PRODUCT MANAGER ==================== -->
+            <div id="adminTab-products" class="admin-tab-content space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    
+                    <!-- ADD / EDIT PRODUCT FORM (Left 5 Cols) -->
+                    <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                            <h2 id="formHeading" class="font-display font-bold text-lg text-slate-900">Add New Product</h2>
+                            <button type="button" id="cancelEditBtn" onclick="resetProductForm()" class="hidden text-xs font-semibold text-rose-600 hover:underline">
+                                Cancel Edit
+                            </button>
+                        </div>
+
+                        <form id="productForm" onsubmit="saveProductFromForm(event)" class="space-y-3.5">
+                            <input type="hidden" id="editProductId" value="">
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Product Title *</label>
+                                <input id="prodTitle" type="text" required placeholder="e.g. Wireless Noise Cancelling Earbuds" class="w-full px-3.5 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Category *</label>
+                                    <select id="prodCategory" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                                        <option value="Tech & Gadgets">Tech & Gadgets</option>
+                                        <option value="Fashion">Fashion</option>
+                                        <option value="Home & Living">Home & Living</option>
+                                        <option value="Beauty & Health">Beauty & Health</option>
+                                        <option value="Digital & Software">Digital & Software</option>
+                                        <option value="Deals">Deals</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Trust Badge *</label>
+                                    <select id="prodBadge" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                                        <option value="Top Rated">Top Rated</option>
+                                        <option value="Best Deal">Best Deal</option>
+                                        <option value="Editor's Pick">Editor's Pick</option>
+                                        <option value="Trending">Trending</option>
+                                        <option value="Hot Offer">Hot Offer</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Deal Price *</label>
+                                    <input id="prodPrice" type="text" required placeholder="$49.99" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Original Price</label>
+                                    <input id="prodOldPrice" type="text" placeholder="$79.99" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Rating (1-5)</label>
+                                    <input id="prodRating" type="number" step="0.1" min="1" max="5" value="4.8" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Affiliate URL *</label>
+                                <input id="prodUrl" type="url" required placeholder="https://your-affiliate-link.com/..." class="w-full px-3.5 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image URL *</label>
+                                <div class="flex gap-2 items-center">
+                                    <input id="prodImage" type="url" required oninput="updateImagePreview(this.value)" placeholder="https://images.unsplash.com/..." class="flex-1 px-3.5 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                                    <img id="prodImagePreview" src="https://placehold.co/100x100/e2e8f0/64748b?text=Preview" onerror="this.src='https://placehold.co/100x100/e2e8f0/64748b?text=Invalid'" alt="Preview" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0 bg-slate-100">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Short Description / Verdict</label>
+                                <textarea id="prodVerdict" rows="2" placeholder="Brief review summary shown in the Quick Review modal..." class="w-full px-3.5 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Key Highlights / Pros (comma-separated)</label>
+                                <input id="prodHighlights" type="text" placeholder="e.g. 30h battery life, Fast charging, Waterproof IPX7" class="w-full px-3.5 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                            </div>
+
+                            <div class="flex items-center gap-2 pt-1">
+                                <input id="prodFeatured" type="checkbox" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500">
+                                <label for="prodFeatured" class="text-xs font-semibold text-slate-700">Set as Hero 'Deal of the Day' Spotlight</label>
+                            </div>
+
+                            <button type="submit" id="saveProductBtn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus-circle"></i> Add Product to Storefront
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- PRODUCT MANAGEMENT TABLE (Right 7 Cols) -->
+                    <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                            <div>
+                                <h2 class="font-display font-bold text-lg text-slate-900">Product Catalog</h2>
+                                <p class="text-xs text-slate-500">Edit, duplicate, feature, or remove storefront items.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="text" id="adminSearchInput" oninput="renderAdminProductTable()" placeholder="Search products..." class="px-3 py-1.5 text-xs border border-slate-200 rounded-xl outline-none focus:border-brand-500">
+                                <select id="adminCatFilter" onchange="renderAdminProductTable()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-xl outline-none focus:border-brand-500">
+                                    <option value="All">All Categories</option>
+                                    <option value="Tech & Gadgets">Tech & Gadgets</option>
+                                    <option value="Fashion">Fashion</option>
+                                    <option value="Home & Living">Home & Living</option>
+                                    <option value="Beauty & Health">Beauty & Health</option>
+                                    <option value="Digital & Software">Digital & Software</option>
+                                    <option value="Deals">Deals</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                                        <th class="py-3 pr-3">Product</th>
+                                        <th class="py-3 px-2">Category</th>
+                                        <th class="py-3 px-2">Price</th>
+                                        <th class="py-3 px-2 text-center">Clicks</th>
+                                        <th class="py-3 pl-2 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminProductTableBody" class="divide-y divide-slate-100 text-xs">
+                                    <!-- Dynamically populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ==================== TAB 2: AD SLOT MANAGER ==================== -->
+            <div id="adminTab-ads" class="admin-tab-content hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                        <div>
+                            <h2 class="font-display font-bold text-lg text-slate-900">Live Ad Slot Code Manager</h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Paste Google AdSense scripts or custom HTML/JS banner codes below. Changes apply immediately to your live storefront.</p>
+                        </div>
+                        <button onclick="saveAdCodes()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-2 shrink-0">
+                            <i class="fa-solid fa-floppy-disk"></i> Save & Publish All Ad Slots
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <!-- Slot 1 -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-slate-800">1. Top Leaderboard Banner (728x90 / Responsive)</label>
+                                <span id="adStatus-top" class="text-[11px] font-semibold text-slate-400">Default Placeholder</span>
+                            </div>
+                            <textarea id="adCode-top" rows="5" placeholder="<!-- Paste Google AdSense or HTML banner code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-brand-500"></textarea>
+                        </div>
+
+                        <!-- Slot 2 -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-slate-800">2. In-Feed Horizontal Banner (Mid-Page)</label>
+                                <span id="adStatus-infeed" class="text-[11px] font-semibold text-slate-400">Default Placeholder</span>
+                            </div>
+                            <textarea id="adCode-infeed" rows="5" placeholder="<!-- Paste Google AdSense In-Feed code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-brand-500"></textarea>
+                        </div>
+
+                        <!-- Slot 3 -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-slate-800">3. Sticky Sidebar Ad (300x250 / 300x600)</label>
+                                <span id="adStatus-sidebar" class="text-[11px] font-semibold text-slate-400">Default Placeholder</span>
+                            </div>
+                            <textarea id="adCode-sidebar" rows="5" placeholder="<!-- Paste Sidebar Display Ad code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-brand-500"></textarea>
+                        </div>
+
+                        <!-- Slot 4 -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-slate-800">4. Bottom Footer Banner (970x90 / Multiplex)</label>
+                                <span id="adStatus-footer" class="text-[11px] font-semibold text-slate-400">Default Placeholder</span>
+                            </div>
+                            <textarea id="adCode-footer" rows="5" placeholder="<!-- Paste Footer Multiplex or Display Ad code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-brand-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== TAB 3: DATA BACKUP, STATIC EXPORT & SETTINGS ==================== -->
+            <div id="adminTab-backup" class="admin-tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- JSON Backup & Import -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                        <h3 class="font-display font-bold text-lg text-slate-900">Backup & Restore Store Data</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Your products, click stats, and ad codes are automatically saved in your browser's localStorage. Download a JSON backup anytime or restore from a previous file.
+                        </p>
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="exportWebsiteJSON()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-2">
+                                <i class="fa-solid fa-download"></i> Export Website Data (JSON)
+                            </button>
+                            <label class="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-bold rounded-xl transition flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-upload"></i> Import Data
+                                <input type="file" accept=".json" onchange="importWebsiteJSON(event)" class="hidden">
+                            </label>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100">
+                            <button onclick="resetToFactoryDefaults()" class="text-xs font-semibold text-rose-600 hover:underline">
+                                Reset All Products & Stats to Default Demo Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Security / PIN Change -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                        <h3 class="font-display font-bold text-lg text-slate-900">Admin Security Settings</h3>
+                        <p class="text-xs text-slate-500">Update the PIN required to unlock this Admin Dashboard.</p>
+                        <form onsubmit="updateAdminPin(event)" class="flex gap-2">
+                            <input type="text" id="newAdminPinInput" required minlength="4" placeholder="Enter new PIN (min 4 chars)" class="flex-1 px-3.5 py-2 text-xs border border-slate-300 rounded-xl outline-none focus:border-brand-500">
+                            <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition">
+                                Update PIN
+                            </button>
+                        </form>
+                        <p class="text-[11px] text-slate-400">Tip: Press <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-slate-700 font-mono">Ctrl + Shift + A</kbd> anywhere on the site to open Admin Access.</p>
+                    </div>
+
+                </div>
+
+                <!-- Static HTML Deployment Export -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-slate-900">Generate Static HTML for Hosting (Netlify / Vercel / GitHub Pages)</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Generates a complete, standalone <code class="text-brand-600 font-semibold">index.html</code> file with all your newly added products and ad codes permanently baked in.</p>
+                        </div>
+                        <button onclick="downloadStaticHTML()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2 shrink-0">
+                            <i class="fa-solid fa-file-code"></i> Download Production index.html
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT LOGIC, STATE & ADMIN ENGINE ==================== -->
+    <script>
+        const STORAGE_KEYS = {
+            PRODUCTS: 'nexbari_products_v1',
+            ADS: 'nexbari_ads_v1',
+            PIN: 'nexbari_admin_pin_v1',
+            SESSION: 'nexbari_admin_unlocked_v1'
+        };
+
+        /**
+         * DEFAULT MULTI-NICHE AFFILIATE PRODUCT DATABASE
+         * Zero marketplace names anywhere.
+         */
+        const defaultProducts = [
+            {
+                id: 1,
+                title: "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+                category: "Tech & Gadgets",
+                badge: "Editor's Pick",
+                price: "$328.00",
+                numericPrice: 328,
+                oldPrice: "$399.99",
+                discount: "18% OFF",
+                rating: 4.9,
+                reviews: 2450,
+                clicks: 42,
+                featured: true,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+                highlights: ["Industry-leading Active Noise Cancellation", "30-hour battery life with quick charging", "Crystal clear hands-free calling"],
+                pros: ["Unmatched noise cancellation for travel & work", "Ultra-lightweight comfortable earcups", "Multipoint Bluetooth connection"],
+                cons: ["Does not fold completely flat like previous model", "Premium price point"],
+                verdict: "If you want the best all-around wireless headphones right now, the Sony WH-1000XM5 delivers unbeatable comfort and silence.",
+                affiliateUrl: "https://example.com/affiliate-link-1"
+            },
+            {
+                id: 2,
+                title: "RGB Smart WiFi LED Strip Lights (10M Music Sync)",
+                category: "Home & Living",
+                badge: "Best Deal",
+                price: "$14.99",
+                numericPrice: 14.99,
+                oldPrice: "$29.99",
+                discount: "50% OFF",
+                rating: 4.7,
+                reviews: 5120,
+                clicks: 68,
+                featured: false,
+                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80",
+                highlights: ["Works with Alexa, Google Home & Smart App", "Built-in mic syncs colors to music beats", "16 million customizable RGB colors"],
+                pros: ["Super affordable room makeover upgrade", "Strong 3M adhesive backing", "Easy smartphone app scheduling"],
+                cons: ["Standard shipping may take 7-14 days"],
+                verdict: "One of the highest-rated budget room decor upgrades available. Ideal for gaming setups, bedrooms, and TV backlights.",
+                affiliateUrl: "https://example.com/affiliate-link-2"
+            },
+            {
+                id: 3,
+                title: "Men's Breathable Mesh Casual Running Sneakers",
+                category: "Fashion",
+                badge: "Trending",
+                price: "৳1,490",
+                numericPrice: 15,
+                oldPrice: "৳2,800",
+                discount: "47% OFF",
+                rating: 4.6,
+                reviews: 890,
+                clicks: 31,
+                featured: false,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
+                highlights: ["Lightweight memory foam cushioned sole", "Sweat-resistant breathable knit upper", "Cash on Delivery & fast shipping available"],
+                pros: ["Very comfortable for daily walking & gym", "Great value for money", "Fast local delivery"],
+                cons: ["Order one size up for wide feet"],
+                verdict: "A top-selling everyday sneaker with hundreds of verified buyer photos praising its lightweight comfort and durability.",
+                affiliateUrl: "https://example.com/affiliate-link-3"
+            },
+            {
+                id: 4,
+                title: "AI Digital Marketing & Affiliate Mastery 2026 Blueprint",
+                category: "Digital & Software",
+                badge: "Hot Offer",
+                price: "$47.00",
+                numericPrice: 47,
+                oldPrice: "$197.00",
+                discount: "76% OFF",
+                rating: 4.8,
+                reviews: 1340,
+                clicks: 54,
+                featured: false,
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+                highlights: ["Step-by-step video training + AI prompt templates", "Instant digital access after checkout", "60-Day 100% Money-Back Guarantee"],
+                pros: ["Beginner-friendly traffic & SEO blueprints", "Includes ready-to-use landing page templates", "Backed by a full 60-day refund policy"],
+                cons: ["Requires consistent daily action to see results"],
+                verdict: "A comprehensive digital training suite for aspiring online entrepreneurs looking to automate content and marketing workflows.",
+                affiliateUrl: "https://example.com/affiliate-link-4"
+            },
+            {
+                id: 5,
+                title: "Vitamin C + Hyaluronic Acid Brightening Face Serum",
+                category: "Beauty & Health",
+                badge: "Top Rated",
+                price: "৳850",
+                numericPrice: 9,
+                oldPrice: "৳1,350",
+                discount: "37% OFF",
+                rating: 4.8,
+                reviews: 1620,
+                clicks: 29,
+                featured: false,
+                image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
+                highlights: ["100% authentic dermatologist-tested formula", "Fades dark spots & boosts natural glow", "Non-greasy fast-absorbing hydration"],
+                pros: ["Suitable for oily and combination skin", "Visible radiance within 2 weeks", "Verified authentic packaging"],
+                cons: ["Must use sunscreen during daytime application"],
+                verdict: "A bestseller in the skincare category—authentic, gentle, and packed with proven hydrating ingredients.",
+                affiliateUrl: "https://example.com/affiliate-link-5"
+            },
+            {
+                id: 6,
+                title: "Portable USB-C Rechargeable Smoothie Blender (400ml)",
+                category: "Home & Living",
+                badge: "Editor's Pick",
+                price: "$29.95",
+                numericPrice: 29.95,
+                oldPrice: "$44.99",
+                discount: "33% OFF",
+                rating: 4.6,
+                reviews: 3890,
+                clicks: 19,
+                featured: false,
+                image: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80",
+                highlights: ["6 stainless steel blades crush ice & fruits", "BPA-free food-grade Tritan bottle", "Makes 15+ shakes per single USB-C charge"],
+                pros: ["Fits easily in gym bags and car cupholders", "Self-cleaning mode with water and a drop of soap", "Quiet motor"],
+                cons: ["Cut frozen fruit into small cubes for best blending"],
+                verdict: "Perfect for protein shakes at the gym or fresh smoothies at the office without needing a bulky countertop blender.",
+                affiliateUrl: "https://example.com/affiliate-link-6"
+            },
+            {
+                id: 7,
+                title: "TWS Pro Wireless Earbuds with LED Battery Display",
+                category: "Tech & Gadgets",
+                badge: "Best Deal",
+                price: "$11.40",
+                numericPrice: 11.40,
+                oldPrice: "$25.00",
+                discount: "54% OFF",
+                rating: 4.5,
+                reviews: 9400,
+                clicks: 87,
+                featured: false,
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80",
+                highlights: ["Bluetooth 5.3 instant auto-pairing", "IPX7 waterproof for workouts & rain", "Digital LED power indicator case"],
+                pros: ["Unbelievable sound quality under $15", "Pocket-sized charging case", "Touch controls for volume & calls"],
+                cons: ["Basic microphone in loud windy outdoors"],
+                verdict: "Over 9,000 positive buyer reviews prove these budget wireless earbuds punch way above their price tag.",
+                affiliateUrl: "https://example.com/affiliate-link-7"
+            },
+            {
+                id: 8,
+                title: "Yoga Burn & Home Fitness 12-Week Transformation System",
+                category: "Deals",
+                badge: "Top Rated",
+                price: "$37.00",
+                numericPrice: 37,
+                oldPrice: "$99.00",
+                discount: "63% OFF",
+                rating: 4.7,
+                reviews: 2150,
+                clicks: 24,
+                featured: false,
+                image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80",
+                highlights: ["Follow-along HD video workouts for all levels", "No expensive gym equipment required", "Instant mobile & desktop streaming"],
+                pros: ["Progressive 3-phase structure prevents plateaus", "Can be done in 30 minutes from home", "Full 60-day satisfaction guarantee"],
+                cons: ["Digital video program (requires internet connection)"],
+                verdict: "One of the most popular structured home fitness programs, loved by users seeking guided daily workouts.",
+                affiliateUrl: "https://example.com/affiliate-link-8"
+            }
+        ];
+
+        // Load State from LocalStorage or Fallbacks
+        let products = [];
+        let adCodes = { top: '', infeed: '', sidebar: '', footer: '' };
+        let activeCategory = 'All';
+        let searchQuery = '';
+        let currentSort = 'featured';
+
+        function loadState() {
+            try {
+                const savedProds = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+                products = savedProds ? JSON.parse(savedProds) : JSON.parse(JSON.stringify(defaultProducts));
+            } catch (e) {
+                products = JSON.parse(JSON.stringify(defaultProducts));
+            }
+
+            try {
+                const savedAds = localStorage.getItem(STORAGE_KEYS.ADS);
+                if (savedAds) adCodes = JSON.parse(savedAds);
+            } catch (e) {}
+        }
+
+        function persistProducts() {
+            try {
+                localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+            } catch (e) {}
+            updateDashboardStats();
+        }
+
+        // Click Tracking on "Buy Now"
+        function trackProductClick(productId) {
+            const item = products.find(p => p.id === productId);
+            if (item) {
+                item.clicks = (item.clicks || 0) + 1;
+                persistProducts();
+                if (!document.getElementById('adminDashboardOverlay').classList.contains('hidden')) {
+                    renderAdminProductTable();
+                }
+            }
+        }
+
+        // Calculate Discount Percentage Automatically
+        function computeDiscountTag(priceStr, oldPriceStr) {
+            const p = parseFloat(String(priceStr).replace(/[^0-9.]/g, ''));
+            const oldP = parseFloat(String(oldPriceStr).replace(/[^0-9.]/g, ''));
+            if (p && oldP && oldP > p) {
+                const pct = Math.round(((oldP - p) / oldP) * 100);
+                return `${pct}% OFF`;
+            }
+            return "HOT DEAL";
+        }
+
+        // Conversion Highlight Badge Styling Helper
+        function getHighlightBadgeStyle(badge) {
+            switch (badge) {
+                case "Editor's Pick":
+                    return { classes: 'bg-indigo-100 text-indigo-800 border-indigo-200', icon: 'fa-solid fa-award' };
+                case 'Best Deal':
+                    return { classes: 'bg-emerald-100 text-emerald-800 border-emerald-200', icon: 'fa-solid fa-bolt' };
+                case 'Top Rated':
+                    return { classes: 'bg-amber-100 text-amber-900 border-amber-200', icon: 'fa-solid fa-crown' };
+                case 'Trending':
+                    return { classes: 'bg-sky-100 text-sky-800 border-sky-200', icon: 'fa-solid fa-arrow-trend-up' };
+                case 'Hot Offer':
+                default:
+                    return { classes: 'bg-rose-100 text-rose-800 border-rose-200', icon: 'fa-solid fa-fire' };
+            }
+        }
+
+        // Update Hero Deal of the Day Spotlight
+        function renderFeaturedSpotlight() {
+            const featuredItem = products.find(p => p.featured) || products[0];
+            if (!featuredItem) return;
+
+            document.getElementById('spotlightImg').src = featuredItem.image;
+            document.getElementById('spotlightBadge').textContent = featuredItem.badge;
+            document.getElementById('spotlightRating').innerHTML = `<i class="fa-solid fa-star"></i> ${featuredItem.rating} (${featuredItem.reviews || 120})`;
+            document.getElementById('spotlightTitle').textContent = featuredItem.title;
+            document.getElementById('spotlightPrice').textContent = featuredItem.price;
+            document.getElementById('spotlightOldPrice').textContent = featuredItem.oldPrice || '';
+            document.getElementById('spotlightDiscount').textContent = featuredItem.discount ? `-${featuredItem.discount}` : 'HOT DEAL';
+
+            const btn = document.getElementById('spotlightBtn');
+            btn.href = featuredItem.affiliateUrl;
+            btn.onclick = () => trackProductClick(featuredItem.id);
+        }
+
+        // Render Storefront Product Cards
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            const countText = document.getElementById('productCountText');
+
+            let filtered = products.filter(item => {
+                const matchCat = activeCategory === 'All' || item.category === activeCategory;
+                const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    item.badge.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            if (currentSort === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (currentSort === 'price-low') {
+                filtered.sort((a, b) => a.numericPrice - b.numericPrice);
+            } else if (currentSort === 'price-high') {
+                filtered.sort((a, b) => b.numericPrice - a.numericPrice);
+            } else {
+                filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+            }
+
+            countText.textContent = `Showing ${filtered.length} product${filtered.length === 1 ? '' : 's'}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(product => {
+                const badgeStyle = getHighlightBadgeStyle(product.badge);
+                const highlightsList = (product.highlights && product.highlights.length) ? product.highlights : ["Top-rated verified pick", "Official checkout guarantee"];
+                return `
+                    <article class="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group">
+                        
+                        <!-- Product Image & Top Trust Badges -->
+                        <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                            <img 
+                                src="${product.image}" 
+                                onerror="this.src='https://placehold.co/600x450/e2e8f0/475569?text=NEXBARI+Deal'"
+                                alt="${product.title}" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                            >
+                            <!-- Generic Trust Badge -->
+                            <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border shadow-sm ${badgeStyle.classes}">
+                                <i class="${badgeStyle.icon}"></i> ${product.badge}
+                            </span>
+                            <!-- Discount Badge -->
+                            <span class="absolute top-3 right-3 bg-slate-900/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                                ${product.discount || 'HOT DEAL'}
+                            </span>
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="flex items-center justify-between text-xs mb-1.5">
+                                <span class="font-semibold text-brand-600">${product.category}</span>
+                                <span class="text-amber-500 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-star"></i> ${product.rating} <span class="text-slate-400 font-normal">(${product.reviews || 120})</span>
+                                </span>
+                            </div>
+
+                            <h3 class="font-display font-bold text-slate-900 text-base leading-snug line-clamp-2 mb-3 group-hover:text-brand-600 transition-colors">
+                                ${product.title}
+                            </h3>
+
+                            <!-- Key Highlights -->
+                            <ul class="space-y-1.5 text-xs text-slate-600 mb-4 flex-1">
+                                ${highlightsList.slice(0, 2).map(point => `
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-500 mt-0.5 shrink-0"></i>
+                                        <span class="line-clamp-1">${point}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+
+                            <!-- Price Row -->
+                            <div class="flex items-baseline gap-2 pt-3 border-t border-slate-100 mb-4">
+                                <span class="text-xl font-extrabold text-slate-900">${product.price}</span>
+                                <span class="text-xs text-slate-400 line-through">${product.oldPrice || ''}</span>
+                            </div>
+
+                            <!-- Action Buttons: Review + Buy Now -->
+                            <div class="grid grid-cols-12 gap-2">
+                                <button 
+                                    onclick="openReviewModal(${product.id})" 
+                                    class="col-span-4 py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition flex items-center justify-center gap-1"
+                                    title="Read Pros, Cons & Verdict"
+                                >
+                                    <i class="fa-regular fa-eye"></i> Review
+                                </button>
+                                <a 
+                                    href="${product.affiliateUrl}" 
+                                    onclick="trackProductClick(${product.id})"
+                                    target="_blank" 
+                                    rel="nofollow sponsored" 
+                                    class="col-span-8 py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm bg-brand-600 hover:bg-brand-700 text-white"
+                                >
+                                    Buy Now <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // Filter by Niche Category
+        function filterByCategory(category) {
+            activeCategory = category;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                if (btn.textContent.trim().includes(category) || (category === 'All' && btn.textContent.trim() === 'All Niches')) {
+                    btn.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+                    btn.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
+                } else {
+                    btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+                    btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
+                }
+            });
+            renderProducts();
+            const dealsEl = document.getElementById('deals-section');
+            if (dealsEl && (window.scrollY < dealsEl.offsetTop - 100 || window.scrollY > dealsEl.offsetTop + 400)) {
+                dealsEl.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function handleSearch(val) {
+            searchQuery = val;
+            document.getElementById('searchInputDesktop').value = val;
+            document.getElementById('searchInputMobile').value = val;
+            renderProducts();
+        }
+
+        function handleSort(val) {
+            currentSort = val;
+            renderProducts();
+        }
+
+        function resetFilters() {
+            activeCategory = 'All';
+            searchQuery = '';
+            currentSort = 'featured';
+            document.getElementById('searchInputDesktop').value = '';
+            document.getElementById('searchInputMobile').value = '';
+            document.getElementById('sortSelect').value = 'featured';
+            filterByCategory('All');
+        }
+
+        // Quick Review Modal Functions
+        function openReviewModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const badgeStyle = getHighlightBadgeStyle(product.badge);
+            const badgeEl = document.getElementById('modalHighlightBadge');
+            badgeEl.className = `text-xs font-bold px-2.5 py-1 rounded-lg border inline-flex items-center gap-1.5 ${badgeStyle.classes}`;
+            badgeEl.innerHTML = `<i class="${badgeStyle.icon}"></i> ${product.badge}`;
+
+            document.getElementById('modalImage').src = product.image;
+            document.getElementById('modalCategory').textContent = product.category;
+            document.getElementById('modalTitle').textContent = product.title;
+            document.getElementById('modalRating').innerHTML = `<i class="fa-solid fa-star"></i> ${product.rating} / 5.0`;
+            document.getElementById('modalReviews').textContent = `(${product.reviews || 120} verified ratings)`;
+            document.getElementById('modalPrice').textContent = product.price;
+            document.getElementById('modalOldPrice').textContent = product.oldPrice || '';
+            document.getElementById('modalVerdict').textContent = product.verdict || "Carefully vetted by the NEXBARI research team for quality, durability, and price value.";
+
+            const pros = (product.pros && product.pros.length) ? product.pros : (product.highlights || ["Verified quality", "Great price value"]);
+            const cons = (product.cons && product.cons.length) ? product.cons : ["Limited-time promotional pricing"];
+
+            document.getElementById('modalPros').innerHTML = pros.map(p => `<li class="flex items-start gap-1.5"><span>•</span><span>${p}</span></li>`).join('');
+            document.getElementById('modalCons').innerHTML = cons.map(c => `<li class="flex items-start gap-1.5"><span>•</span><span>${c}</span></li>`).join('');
+
+            const buyBtn = document.getElementById('modalBuyBtn');
+            buyBtn.href = product.affiliateUrl;
+            buyBtn.onclick = () => trackProductClick(product.id);
+
+            const modal = document.getElementById('reviewModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeReviewModal() {
+            const modal = document.getElementById('reviewModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // ==================== ADMIN AUTH & DASHBOARD LOGIC ====================
+        function getAdminPin() {
+            return localStorage.getItem(STORAGE_KEYS.PIN) || 'admin123';
+        }
+
+        function openAdminAccess() {
+            if (sessionStorage.getItem(STORAGE_KEYS.SESSION) === 'true') {
+                openAdminDashboard();
+            } else {
+                document.getElementById('loginErrorMsg').classList.add('hidden');
+                document.getElementById('adminPinInput').value = '';
+                const modal = document.getElementById('adminLoginModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => document.getElementById('adminPinInput').focus(), 100);
+            }
+        }
+
+        function closeAdminLogin() {
+            const modal = document.getElementById('adminLoginModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const entered = document.getElementById('adminPinInput').value.trim();
+            if (entered === getAdminPin()) {
+                sessionStorage.setItem(STORAGE_KEYS.SESSION, 'true');
+                closeAdminLogin();
+                openAdminDashboard();
+            } else {
+                document.getElementById('loginErrorMsg').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+            closeAdminDashboard();
+        }
+
+        function openAdminDashboard() {
+            updateDashboardStats();
+            renderAdminProductTable();
+            populateAdSlotInputs();
+            document.getElementById('adminDashboardOverlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeAdminDashboard() {
+            document.getElementById('adminDashboardOverlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            renderFeaturedSpotlight();
+            renderProducts();
+        }
+
+        function showAdminToast(message) {
+            const toast = document.getElementById('adminToast');
+            document.getElementById('adminToastText').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`adminTab-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+            });
+            const activeBtn = document.getElementById(`tabBtn-${tabName}`);
+            activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
+            activeBtn.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        }
+
+        function updateDashboardStats() {
+            document.getElementById('statTotalProducts').textContent = products.length;
+            const uniqueCats = new Set(products.map(p => p.category));
+            document.getElementById('statActiveCategories').textContent = uniqueCats.size;
+            const totalClicks = products.reduce((sum, p) => sum + (p.clicks || 0), 0);
+            document.getElementById('statTotalClicks').textContent = totalClicks;
+
+            const activeAdsCount = Object.values(adCodes).filter(code => code && code.trim().length > 0).length;
+            document.getElementById('statAdSlots').textContent = activeAdsCount > 0 ? `${activeAdsCount} Custom / 4` : '4 / 4 Ready';
+        }
+
+        // Product Form: Add & Edit
+        function updateImagePreview(url) {
+            const img = document.getElementById('prodImagePreview');
+            img.src = url.trim() || 'https://placehold.co/100x100/e2e8f0/64748b?text=Preview';
+        }
+
+        function saveProductFromForm(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editProductId').value;
+            const title = document.getElementById('prodTitle').value.trim();
+            const category = document.getElementById('prodCategory').value;
+            const badge = document.getElementById('prodBadge').value;
+            const price = document.getElementById('prodPrice').value.trim();
+            const oldPrice = document.getElementById('prodOldPrice').value.trim();
+            const rating = parseFloat(document.getElementById('prodRating').value) || 4.8;
+            const affiliateUrl = document.getElementById('prodUrl').value.trim();
+            const image = document.getElementById('prodImage').value.trim();
+            const verdict = document.getElementById('prodVerdict').value.trim() || `Selected by NEXBARI editors for top quality and value in ${category}.`;
+            const highlightsRaw = document.getElementById('prodHighlights').value.trim();
+            const highlights = highlightsRaw ? highlightsRaw.split(',').map(s => s.trim()).filter(Boolean) : ["Top-rated quality pick", "Verified buyer satisfaction"];
+            const isFeatured = document.getElementById('prodFeatured').checked;
+            const numericPrice = parseFloat(price.replace(/[^0-9.]/g, '')) || 0;
+            const discount = computeDiscountTag(price, oldPrice);
+
+            if (isFeatured) {
+                products.forEach(p => p.featured = false);
+            }
+
+            if (editId) {
+                const idx = products.findIndex(p => p.id === Number(editId));
+                if (idx !== -1) {
+                    products[idx] = {
+                        ...products[idx],
+                        title, category, badge, price, numericPrice, oldPrice, discount,
+                        rating, affiliateUrl, image, verdict, highlights, pros: highlights, featured: isFeatured
+                    };
+                    showAdminToast("Product updated successfully!");
+                }
+            } else {
+                const newProduct = {
+                    id: Date.now(),
+                    title, category, badge, price, numericPrice, oldPrice, discount,
+                    rating, reviews: Math.floor(Math.random() * 400) + 85, clicks: 0,
+                    featured: isFeatured,
+                    image, highlights, pros: highlights,
+                    cons: ["Limited-time promotional pricing"],
+                    verdict, affiliateUrl
+                };
+                products.unshift(newProduct);
+                showAdminToast("New product added to storefront!");
+            }
+
+            persistProducts();
+            resetProductForm();
+            renderAdminProductTable();
+        }
+
+        function editProductInForm(id) {
+            const item = products.find(p => p.id === id);
+            if (!item) return;
+
+            document.getElementById('editProductId').value = item.id;
+            document.getElementById('prodTitle').value = item.title;
+            document.getElementById('prodCategory').value = item.category;
+            document.getElementById('prodBadge').value = item.badge;
+            document.getElementById('prodPrice').value = item.price;
+            document.getElementById('prodOldPrice').value = item.oldPrice || '';
+            document.getElementById('prodRating').value = item.rating;
+            document.getElementById('prodUrl').value = item.affiliateUrl;
+            document.getElementById('prodImage').value = item.image;
+            updateImagePreview(item.image);
+            document.getElementById('prodVerdict').value = item.verdict || '';
+            document.getElementById('prodHighlights').value = (item.highlights || []).join(', ');
+            document.getElementById('prodFeatured').checked = !!item.featured;
+
+            document.getElementById('formHeading').textContent = 'Edit Product';
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+            document.getElementById('saveProductBtn').innerHTML = '<i class="fa-solid fa-check"></i> Update Product';
+            document.getElementById('productForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetProductForm() {
+            document.getElementById('productForm').reset();
+            document.getElementById('editProductId').value = '';
+            document.getElementById('prodRating').value = '4.8';
+            updateImagePreview('');
+            document.getElementById('formHeading').textContent = 'Add New Product';
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+            document.getElementById('saveProductBtn').innerHTML = '<i class="fa-solid fa-plus-circle"></i> Add Product to Storefront';
+        }
+
+        function duplicateProduct(id) {
+            const item = products.find(p => p.id === id);
+            if (!item) return;
+            const copy = {
+                ...JSON.parse(JSON.stringify(item)),
+                id: Date.now(),
+                title: `${item.title} (Copy)`,
+                clicks: 0,
+                featured: false
+            };
+            products.unshift(copy);
+            persistProducts();
+            renderAdminProductTable();
+            showAdminToast("Product duplicated!");
+        }
+
+        function toggleFeaturedProduct(id) {
+            products.forEach(p => {
+                p.featured = (p.id === id) ? !p.featured : false;
+            });
+            persistProducts();
+            renderAdminProductTable();
+            showAdminToast("Featured Deal of the Day updated!");
+        }
+
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            persistProducts();
+            renderAdminProductTable();
+            showAdminToast("Product removed from catalog.");
+        }
+
+        function renderAdminProductTable() {
+            const tbody = document.getElementById('adminProductTableBody');
+            const query = (document.getElementById('adminSearchInput').value || '').toLowerCase();
+            const catFilter = document.getElementById('adminCatFilter').value;
+
+            const list = products.filter(p => {
+                const matchCat = catFilter === 'All' || p.category === catFilter;
+                const matchQ = p.title.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
+                return matchCat && matchQ;
+            });
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400">No products match your filter.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(p => `
+                <tr class="hover:bg-slate-50/80 transition">
+                    <td class="py-3 pr-3">
+                        <div class="flex items-center gap-3">
+                            <img src="${p.image}" onerror="this.src='https://placehold.co/80x80/e2e8f0/64748b?text=IMG'" alt="" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0">
+                            <div class="min-w-0">
+                                <p class="font-bold text-slate-900 truncate max-w-[180px] sm:max-w-[230px]" title="${p.title}">${p.title}</p>
+                                <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">${p.badge}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3 px-2 text-slate-600 whitespace-nowrap">${p.category}</td>
+                    <td class="py-3 px-2 font-bold text-slate-900 whitespace-nowrap">${p.price}</td>
+                    <td class="py-3 px-2 text-center">
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[11px]">
+                            ${p.clicks || 0}
+                        </span>
+                    </td>
+                    <td class="py-3 pl-2 text-right whitespace-nowrap">
+                        <div class="inline-flex items-center gap-1">
+                            <button onclick="toggleFeaturedProduct(${p.id})" class="p-1.5 rounded-lg border ${p.featured ? 'bg-amber-100 border-amber-300 text-amber-700' : 'bg-white border-slate-200 text-slate-400 hover:text-amber-600'}" title="Toggle Hero Featured Deal">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
+                            <button onclick="editProductInForm(${p.id})" class="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-brand-600 hover:border-brand-300" title="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="duplicateProduct(${p.id})" class="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-300" title="Duplicate">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                            <button onclick="deleteProduct(${p.id})" class="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-300" title="Delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ==================== AD SLOT MANAGER LOGIC ====================
+        function populateAdSlotInputs() {
+            document.getElementById('adCode-top').value = adCodes.top || '';
+            document.getElementById('adCode-infeed').value = adCodes.infeed || '';
+            document.getElementById('adCode-sidebar').value = adCodes.sidebar || '';
+            document.getElementById('adCode-footer').value = adCodes.footer || '';
+            updateAdStatusLabels();
+        }
+
+        function updateAdStatusLabels() {
+            ['top', 'infeed', 'sidebar', 'footer'].forEach(slot => {
+                const badge = document.getElementById(`adStatus-${slot}`);
+                if (adCodes[slot] && adCodes[slot].trim()) {
+                    badge.textContent = 'Custom Ad Active';
+                    badge.className = 'text-[11px] font-bold text-emerald-600';
+                } else {
+                    badge.textContent = 'Default Placeholder';
+                    badge.className = 'text-[11px] font-semibold text-slate-400';
+                }
+            });
+        }
+
+        function injectHtmlWithScripts(container, htmlCode) {
+            container.innerHTML = htmlCode;
+            const scripts = container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        function applyAdCodesToStorefront() {
+            const slotMap = {
+                top: 'ad-slot-top-leaderboard',
+                infeed: 'ad-slot-infeed',
+                sidebar: 'ad-slot-sidebar',
+                footer: 'ad-slot-footer'
+            };
+            Object.entries(slotMap).forEach(([key, domId]) => {
+                const container = document.getElementById(domId);
+                if (container && adCodes[key] && adCodes[key].trim()) {
+                    injectHtmlWithScripts(container, adCodes[key].trim());
+                }
+            });
+        }
+
+        function saveAdCodes() {
+            adCodes = {
+                top: document.getElementById('adCode-top').value,
+                infeed: document.getElementById('adCode-infeed').value,
+                sidebar: document.getElementById('adCode-sidebar').value,
+                footer: document.getElementById('adCode-footer').value
+            };
+            try {
+                localStorage.setItem(STORAGE_KEYS.ADS, JSON.stringify(adCodes));
+            } catch (e) {}
+            applyAdCodesToStorefront();
+            updateAdStatusLabels();
+            updateDashboardStats();
+            showAdminToast("All 4 Ad Slots updated & live!");
+        }
+
+        // ==================== DATA BACKUP, IMPORT & STATIC HTML EXPORT ====================
+        function exportWebsiteJSON() {
+            const payload = {
+                brand: "NEXBARI",
+                exportedAt: new Date().toISOString(),
+                products,
+                adCodes
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nexbari-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showAdminToast("JSON Backup downloaded!");
+        }
+
+        function importWebsiteJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (Array.isArray(parsed.products)) {
+                        products = parsed.products;
+                        persistProducts();
+                    }
+                    if (parsed.adCodes) {
+                        adCodes = parsed.adCodes;
+                        localStorage.setItem(STORAGE_KEYS.ADS, JSON.stringify(adCodes));
+                        populateAdSlotInputs();
+                        applyAdCodesToStorefront();
+                    }
+                    renderAdminProductTable();
+                    updateDashboardStats();
+                    showAdminToast("Data restored successfully!");
+                } catch (err) {
+                    showAdminToast("Invalid JSON backup file.");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function resetToFactoryDefaults() {
+            products = JSON.parse(JSON.stringify(defaultProducts));
+            adCodes = { top: '', infeed: '', sidebar: '', footer: '' };
+            localStorage.removeItem(STORAGE_KEYS.PRODUCTS);
+            localStorage.removeItem(STORAGE_KEYS.ADS);
+            populateAdSlotInputs();
+            renderAdminProductTable();
+            updateDashboardStats();
+            showAdminToast("Reset to default NEXBARI catalog!");
+        }
+
+        function updateAdminPin(e) {
+            e.preventDefault();
+            const newPin = document.getElementById('newAdminPinInput').value.trim();
+            if (newPin.length >= 4) {
+                localStorage.setItem(STORAGE_KEYS.PIN, newPin);
+                document.getElementById('newAdminPinInput').value = '';
+                showAdminToast("Admin PIN updated successfully!");
+            }
+        }
+
+        function downloadStaticHTML() {
+            // Clone current HTML document and bake in the updated defaultProducts & adCodes
+            let rawHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const serializedProducts = JSON.stringify(products, null, 4);
+            rawHtml = rawHtml.replace(
+                /const defaultProducts = \[[\s\S]*?\];/,
+                `const defaultProducts = ${serializedProducts};`
+            );
+            const blob = new Blob([rawHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            showAdminToast("Production index.html downloaded!");
+        }
+
+        // Newsletter Form Handler
+        function handleNewsletter(e) {
+            e.preventDefault();
+            const msg = document.getElementById('newsletterMsg');
+            msg.textContent = "Subscribed! You'll receive weekly NEXBARI deals.";
+            msg.classList.remove('hidden');
+            e.target.reset();
+        }
+
+        // Live Deal Countdown Timer
+        function startCountdown() {
+            let seconds = 8 * 3600 + 42 * 60 + 19;
+            const el = document.getElementById('dealCountdown');
+            setInterval(() => {
+                if (seconds <= 0) seconds = 12 * 3600;
+                seconds--;
+                const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+                const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+                const s = String(seconds % 60).padStart(2, '0');
+                if (el) el.textContent = `${h}:${m}:${s}`;
+            }, 1000);
+        }
+
+        // Keyboard Shortcut: Ctrl + Shift + A for Admin Login
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+                openAdminAccess();
+            }
+        });
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('yearSpan').textContent = new Date().getFullYear();
+            loadState();
+            applyAdCodesToStorefront();
+            renderFeaturedSpotlight();
+            renderProducts();
+            startCountdown();
+        });
+    </script>
+</body>
+</html>
