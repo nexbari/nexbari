@@ -241,71 +241,71 @@
                 <div class="flex flex-wrap items-center gap-2.5">
                     <!-- Category Selector Button (Opens Full Category List) -->
                     <div class="relative" id="categoryDropdownWrapper">
-                        <button type="button" onclick="toggleCategoryMenu()" id="categoryMenuBtn" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-slate-700 border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-center gap-2.5 shadow-sm">
-                            <i class="fa-solid fa-layer-group text-brand-600"></i>
+                        <button type="button" onclick="toggleCategoryMenu()" id="categoryMenuBtn" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-brand-600 to-indigo-600 text-white hover:from-brand-700 hover:to-indigo-700 transition flex items-center gap-2.5 shadow-md shadow-brand-600/20">
+                            <i id="categoryBtnIcon" class="fa-solid fa-layer-group text-amber-300"></i>
                             <span id="selectedCategoryLabel">Categories</span>
-                            <i id="categoryChevron" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+                            <i id="categoryChevron" class="fa-solid fa-chevron-down text-xs text-indigo-200 transition-transform duration-200"></i>
                         </button>
 
                         <!-- Dropdown Panel Showing All Categories -->
-                        <div id="categoryDropdownMenu" class="hidden absolute left-0 mt-2 w-[310px] sm:w-[540px] md:w-[680px] bg-white rounded-2xl border border-slate-200 shadow-2xl p-4 z-30">
-                            <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100">
-                                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Select a Category</span>
-                                <button type="button" onclick="filterByCategory('All')" class="text-xs font-semibold text-brand-600 hover:underline">Show All</button>
+                        <div id="categoryDropdownMenu" class="hidden absolute left-0 mt-2 w-[310px] sm:w-[540px] md:w-[680px] bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl border border-indigo-500/30 shadow-2xl shadow-indigo-950/40 p-4 z-30">
+                            <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-white/10">
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-200">Select a Category</span>
+                                <button type="button" onclick="filterByCategory('All')" class="text-xs font-semibold text-amber-400 hover:text-amber-300 hover:underline">Show All</button>
                             </div>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="categoryPills">
-                                <button onclick="filterByCategory('All')" data-cat="All" class="cat-pill active text-left px-3 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white transition flex items-center gap-2">
+                                <button onclick="filterByCategory('All')" data-cat="All" class="cat-pill active text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-brand-600 text-white shadow-sm border border-brand-400/40 transition flex items-center gap-2">
                                     <i class="fa-solid fa-border-all w-4 text-center"></i> All Categories
                                 </button>
-                                <button onclick="filterByCategory('Tech & Gadgets')" data-cat="Tech & Gadgets" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Tech & Gadgets')" data-cat="Tech & Gadgets" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-microchip w-4 text-center text-brand-500"></i> Tech & Gadgets
                                 </button>
-                                <button onclick="filterByCategory('Electronics')" data-cat="Electronics" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Electronics')" data-cat="Electronics" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-plug w-4 text-center text-brand-500"></i> Electronics
                                 </button>
-                                <button onclick="filterByCategory('Mobile & Accessories')" data-cat="Mobile & Accessories" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Mobile & Accessories')" data-cat="Mobile & Accessories" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-mobile-screen w-4 text-center text-indigo-500"></i> Mobile & Accessories
                                 </button>
-                                <button onclick="filterByCategory('Computers & Laptops')" data-cat="Computers & Laptops" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Computers & Laptops')" data-cat="Computers & Laptops" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-laptop w-4 text-center text-slate-600"></i> Computers & Laptops
                                 </button>
-                                <button onclick="filterByCategory('Audio & Headphones')" data-cat="Audio & Headphones" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Audio & Headphones')" data-cat="Audio & Headphones" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-headphones w-4 text-center text-purple-500"></i> Audio & Headphones
                                 </button>
-                                <button onclick="filterByCategory('Cameras & Photography')" data-cat="Cameras & Photography" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Cameras & Photography')" data-cat="Cameras & Photography" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-camera w-4 text-center text-sky-500"></i> Cameras & Photography
                                 </button>
-                                <button onclick="filterByCategory('Fashion')" data-cat="Fashion" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Fashion')" data-cat="Fashion" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-shirt w-4 text-center text-pink-500"></i> Fashion
                                 </button>
-                                <button onclick="filterByCategory('Home & Living')" data-cat="Home & Living" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Home & Living')" data-cat="Home & Living" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-couch w-4 text-center text-amber-500"></i> Home & Living
                                 </button>
-                                <button onclick="filterByCategory('Kitchen & Dining')" data-cat="Kitchen & Dining" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Kitchen & Dining')" data-cat="Kitchen & Dining" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-utensils w-4 text-center text-orange-500"></i> Kitchen & Dining
                                 </button>
-                                <button onclick="filterByCategory('Beauty & Health')" data-cat="Beauty & Health" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Beauty & Health')" data-cat="Beauty & Health" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-spa w-4 text-center text-rose-500"></i> Beauty & Health
                                 </button>
-                                <button onclick="filterByCategory('Sports & Fitness')" data-cat="Sports & Fitness" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Sports & Fitness')" data-cat="Sports & Fitness" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-dumbbell w-4 text-center text-emerald-600"></i> Sports & Fitness
                                 </button>
-                                <button onclick="filterByCategory('Baby & Kids')" data-cat="Baby & Kids" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Baby & Kids')" data-cat="Baby & Kids" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-baby w-4 text-center text-cyan-500"></i> Baby & Kids
                                 </button>
-                                <button onclick="filterByCategory('Automotive & Tools')" data-cat="Automotive & Tools" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Automotive & Tools')" data-cat="Automotive & Tools" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-car w-4 text-center text-slate-700"></i> Automotive & Tools
                                 </button>
-                                <button onclick="filterByCategory('Books & Stationery')" data-cat="Books & Stationery" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Books & Stationery')" data-cat="Books & Stationery" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-book w-4 text-center text-amber-700"></i> Books & Stationery
                                 </button>
-                                <button onclick="filterByCategory('Digital & Software')" data-cat="Digital & Software" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Digital & Software')" data-cat="Digital & Software" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-laptop-code w-4 text-center text-emerald-500"></i> Digital & Software
                                 </button>
-                                <button onclick="filterByCategory('Deals')" data-cat="Deals" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Deals')" data-cat="Deals" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-bolt w-4 text-center text-amber-500"></i> Deals
                                 </button>
-                                <button onclick="filterByCategory('Other')" data-cat="Other" class="cat-pill text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition flex items-center gap-2">
+                                <button onclick="filterByCategory('Other')" data-cat="Other" class="cat-pill text-left px-3 py-2.5 rounded-xl text-xs font-semibold bg-white/10 text-slate-100 hover:bg-brand-600 hover:text-white border border-white/5 transition flex items-center gap-2">
                                     <i class="fa-solid fa-box w-4 text-center text-slate-400"></i> Other
                                 </button>
                             </div>
@@ -900,23 +900,21 @@
             const labelEl = document.getElementById('selectedCategoryLabel');
 
             if (category === 'All') {
-                menuBtn.classList.remove('border-brand-600', 'bg-brand-50', 'text-brand-700');
-                menuBtn.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+                menuBtn.className = 'px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-brand-600 to-indigo-600 text-white hover:from-brand-700 hover:to-indigo-700 transition flex items-center gap-2.5 shadow-md shadow-brand-600/20';
                 labelEl.textContent = 'Categories';
             } else {
-                menuBtn.classList.add('border-brand-600', 'bg-brand-50', 'text-brand-700');
-                menuBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-200');
+                menuBtn.className = 'px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-slate-900 to-indigo-900 text-white hover:from-slate-800 hover:to-indigo-800 transition flex items-center gap-2.5 shadow-md ring-2 ring-brand-500/40';
                 labelEl.textContent = category;
             }
 
             document.querySelectorAll('.cat-pill').forEach(btn => {
                 const btnCat = btn.getAttribute('data-cat');
                 if (btnCat === category) {
-                    btn.classList.remove('bg-slate-50', 'text-slate-700');
-                    btn.classList.add('bg-brand-600', 'text-white');
+                    btn.classList.remove('bg-white/10', 'text-slate-100', 'border-white/5');
+                    btn.classList.add('bg-brand-600', 'text-white', 'shadow-sm', 'border-brand-400/40');
                 } else {
-                    btn.classList.add('bg-slate-50', 'text-slate-700');
-                    btn.classList.remove('bg-brand-600', 'text-white');
+                    btn.classList.add('bg-white/10', 'text-slate-100', 'border-white/5');
+                    btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm', 'border-brand-400/40');
                 }
             });
 
