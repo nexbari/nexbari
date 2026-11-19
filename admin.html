@@ -242,7 +242,23 @@
   <label class="text-sm font-semibold">Price currency *<select id="currency" class="mt-1 w-full border rounded-lg p-2.5 font-normal"><option value="BDT">BDT — Bangladeshi Taka</option><option value="USD">USD — US Dollar</option></select></label>
   <label class="text-sm font-semibold">Old price<input id="oldPrice" type="number" min="0" step="0.01" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
   <label class="text-sm font-semibold">Badge<input id="badge" placeholder="Best Seller / Top Rated" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
-  <label class="text-sm font-semibold">Image URL<input id="imageUrl" type="url" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
+  <div class="text-sm font-semibold">Product image
+   <input id="imageUrl" type="hidden">
+   <input id="imageFile" type="file" accept="image/*" class="hidden">
+   <div class="mt-1 flex items-center gap-3 border rounded-lg p-2.5 font-normal">
+    <div class="w-14 h-14 shrink-0 rounded-lg bg-slate-100 border overflow-hidden flex items-center justify-center text-slate-300">
+     <img id="imagePreview" alt="Preview" class="hidden w-full h-full object-cover">
+     <i id="imagePlaceholder" class="fa-regular fa-image text-xl"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+     <div class="flex flex-wrap gap-2">
+      <button type="button" id="imagePickBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-60"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload image</button>
+      <button type="button" id="imageRemoveBtn" class="hidden bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-bold">Remove</button>
+     </div>
+     <p id="imageMsg" class="text-xs font-normal text-slate-500 mt-1.5">JPG / PNG / WebP, সর্বোচ্চ 10 MB</p>
+    </div>
+   </div>
+  </div>
   <label class="text-sm font-semibold">Affiliate URL<input id="affiliateUrl" type="url" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
   <label class="text-sm font-semibold">Marketplace<input id="marketplace" placeholder="Amazon / Daraz / AliExpress" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
   <label class="text-sm font-semibold">Rating (0–5)<input id="rating" type="number" min="0" max="5" step="0.1" value="4.8" class="mt-1 w-full border rounded-lg p-2.5 font-normal"></label>
@@ -420,11 +436,92 @@ function render(){const q=$('search').value.toLowerCase();const list=products.fi
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 $('search').oninput=render;
 function openModal(){ $('productModal').classList.remove('hidden'); }
-function closeModal(){ $('productModal').classList.add('hidden'); $('productForm').reset();$('productId').value='';$('active').checked=true;$('rating').value='4.8';$('formMsg').textContent='';$('modalTitle').textContent='Add product'; }
+function closeModal(){ $('productModal').classList.add('hidden'); $('productForm').reset();$('productId').value='';$('active').checked=true;$('rating').value='4.8';$('formMsg').textContent='';$('modalTitle').textContent='Add product';setImage('');setImageMsg('JPG / PNG / WebP, সর্বোচ্চ 10 MB',''); }
 $('newBtn').onclick=()=>{closeModal();openModal();};$('closeModal').onclick=closeModal;$('cancelBtn').onclick=closeModal;
-function editProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return;closeModal();$('modalTitle').textContent='Edit product';$('productId').value=p.id;$('name').value=p.name||'';$('category').value=p.category||'Other';$('price').value=p.price??'';$('currency').value=p.currency||'BDT';$('oldPrice').value=p.old_price??'';$('badge').value=p.badge||'';$('imageUrl').value=p.image_url||'';$('affiliateUrl').value=p.affiliate_url||'';$('marketplace').value=p.marketplace||'';$('rating').value=p.rating??4.8;$('description').value=p.description||'';$('verdict').value=p.verdict||'';$('highlights').value=Array.isArray(p.highlights)?p.highlights.join(', '):'';$('featured').checked=!!p.featured;$('active').checked=!!p.active;openModal();}
-$('productForm').addEventListener('submit',async e=>{e.preventDefault();$('formMsg').textContent='Saving...';const payload={name:$('name').value.trim(),category:$('category').value,price:Number($('price').value),currency:$('currency').value,old_price:$('oldPrice').value===''?null:Number($('oldPrice').value),badge:$('badge').value.trim(),image_url:$('imageUrl').value.trim(),affiliate_url:$('affiliateUrl').value.trim(),marketplace:$('marketplace').value.trim()||'Other',rating:Number($('rating').value||0),description:$('description').value.trim(),verdict:$('verdict').value.trim(),highlights:$('highlights').value.split(',').map(x=>x.trim()).filter(Boolean),featured:$('featured').checked,active:$('active').checked};const id=$('productId').value;let result=id?await db.from('products').update(payload).eq('id',id):await db.from('products').insert(payload);if(result.error){$('formMsg').textContent='Error: '+result.error.message;$('formMsg').className='md:col-span-2 text-sm text-rose-600';return;}$('formMsg').textContent='Saved successfully';$('formMsg').className='md:col-span-2 text-sm text-emerald-600';await loadProducts();setTimeout(closeModal,500);});
+function editProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p)return;closeModal();$('modalTitle').textContent='Edit product';$('productId').value=p.id;$('name').value=p.name||'';$('category').value=p.category||'Other';$('price').value=p.price??'';$('currency').value=p.currency||'BDT';$('oldPrice').value=p.old_price??'';$('badge').value=p.badge||'';setImage(p.image_url||'');$('affiliateUrl').value=p.affiliate_url||'';$('marketplace').value=p.marketplace||'';$('rating').value=p.rating??4.8;$('description').value=p.description||'';$('verdict').value=p.verdict||'';$('highlights').value=Array.isArray(p.highlights)?p.highlights.join(', '):'';$('featured').checked=!!p.featured;$('active').checked=!!p.active;openModal();}
+$('productForm').addEventListener('submit',async e=>{e.preventDefault();if(imageUploading){$('formMsg').textContent='Image upload হচ্ছে, একটু অপেক্ষা করুন...';return;}$('formMsg').textContent='Saving...';const payload={name:$('name').value.trim(),category:$('category').value,price:Number($('price').value),currency:$('currency').value,old_price:$('oldPrice').value===''?null:Number($('oldPrice').value),badge:$('badge').value.trim(),image_url:$('imageUrl').value.trim(),affiliate_url:$('affiliateUrl').value.trim(),marketplace:$('marketplace').value.trim()||'Other',rating:Number($('rating').value||0),description:$('description').value.trim(),verdict:$('verdict').value.trim(),highlights:$('highlights').value.split(',').map(x=>x.trim()).filter(Boolean),featured:$('featured').checked,active:$('active').checked};const id=$('productId').value;let result=id?await db.from('products').update(payload).eq('id',id):await db.from('products').insert(payload);if(result.error){$('formMsg').textContent='Error: '+result.error.message;$('formMsg').className='md:col-span-2 text-sm text-rose-600';return;}$('formMsg').textContent='Saved successfully';$('formMsg').className='md:col-span-2 text-sm text-emerald-600';await loadProducts();setTimeout(closeModal,500);});
 async function deleteProduct(id){if(!confirm('এই product delete করতে চান?'))return;const {error}=await db.from('products').delete().eq('id',id);if(error){alert(error.message);return;}await loadProducts();}
+// ===== Product image upload (Supabase Storage) =====
+const IMAGE_BUCKET = 'product-images';
+let imageUploading = false;
+
+function setImage(url) {
+    $('imageUrl').value = url || '';
+    const img = $('imagePreview');
+    if (url) {
+        img.src = url;
+        img.classList.remove('hidden');
+        $('imagePlaceholder').classList.add('hidden');
+        $('imageRemoveBtn').classList.remove('hidden');
+    } else {
+        img.removeAttribute('src');
+        img.classList.add('hidden');
+        $('imagePlaceholder').classList.remove('hidden');
+        $('imageRemoveBtn').classList.add('hidden');
+    }
+}
+
+function setImageMsg(text, type) {
+    const el = $('imageMsg');
+    el.textContent = text;
+    el.className = 'text-xs font-normal mt-1.5 ' + (type === 'error' ? 'text-rose-600' : type === 'success' ? 'text-emerald-600' : type === 'loading' ? 'text-indigo-600' : 'text-slate-500');
+}
+
+// Resize large photos (max 1200px) and compress to JPEG so pages load fast
+function resizeImage(file, maxSide = 1200, quality = 0.85) {
+    return new Promise(resolve => {
+        const url = URL.createObjectURL(file);
+        const im = new Image();
+        im.onload = () => {
+            const scale = Math.min(1, maxSide / Math.max(im.width, im.height));
+            const w = Math.round(im.width * scale);
+            const h = Math.round(im.height * scale);
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(im, 0, 0, w, h);
+            URL.revokeObjectURL(url);
+            c.toBlob(b => resolve(b || file), 'image/jpeg', quality);
+        };
+        im.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+        im.src = url;
+    });
+}
+
+$('imagePickBtn').onclick = () => $('imageFile').click();
+$('imageRemoveBtn').onclick = () => { setImage(''); setImageMsg('ছবি সরানো হয়েছে। নতুন ছবি আপলোড করুন।', ''); };
+$('imageFile').addEventListener('change', async e => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { setImageMsg('শুধু ছবির ফাইল (JPG, PNG, WebP) দিন।', 'error'); return; }
+    if (file.size > 10 * 1024 * 1024) { setImageMsg('ছবি 10 MB এর বেশি হতে পারবে না।', 'error'); return; }
+
+    imageUploading = true;
+    $('imagePickBtn').disabled = true;
+    setImageMsg('Uploading...', 'loading');
+    try {
+        const blob = await resizeImage(file);
+        const path = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
+        const { error } = await db.storage.from(IMAGE_BUCKET).upload(path, blob, {
+            contentType: blob.type || 'image/jpeg',
+            cacheControl: '31536000',
+            upsert: false
+        });
+        if (error) throw error;
+        const { data } = db.storage.from(IMAGE_BUCKET).getPublicUrl(path);
+        setImage(data.publicUrl);
+        setImageMsg('Upload সম্পন্ন ✓ এখন Save product চাপুন।', 'success');
+    } catch (err) {
+        setImageMsg('Upload failed: ' + (err.message || err) + ' — Supabase Storage-এ bucket ও policy চেক করুন।', 'error');
+    } finally {
+        imageUploading = false;
+        $('imagePickBtn').disabled = false;
+    }
+});
+
 checkAdmin();
 </script>
 </body></html>
