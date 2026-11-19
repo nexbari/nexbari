@@ -1,4 +1,4 @@
-product_html = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -121,7 +121,7 @@ product_html = """<!DOCTYPE html>
                                 <span>Buy Now</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                             </a>
-                            <button onclick="copyProductLink()" id="copyLinkBtn" class="py-4 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm flex items-center justify-center gap-2 transition">
+                            <button type="button" onclick="copyProductLink()" id="copyLinkBtn" class="py-4 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm flex items-center justify-center gap-2 transition">
                                 <i class="fa-solid fa-share-nodes"></i>
                                 <span id="copyBtnText">Copy Product Link</span>
                             </button>
@@ -170,6 +170,13 @@ product_html = """<!DOCTYPE html>
             return 'HOT DEAL';
         }
 
+        function getAffiliateUrl(product) {
+            const raw = (product.affiliate_url || product.affiliate_link || product.url || product.link || '').trim();
+            if (!raw || raw === '#') return '#';
+            if (/^https?:\/\//i.test(raw)) return raw;
+            return 'https://' + raw;
+        }
+
         function showNotFound(msg) {
             document.getElementById('loadingBox').classList.add('hidden');
             if (msg) document.getElementById('notFoundMsg').textContent = msg;
@@ -197,7 +204,8 @@ product_html = """<!DOCTYPE html>
                     return;
                 }
 
-                const product = (data || []).find(item => String(item.id) === String(productId));
+                const list = Array.isArray(data) ? data : [];
+                const product = list.find(item => String(item.id) === String(productId));
 
                 if (!product) {
                     showNotFound('The product link may have expired or been removed.');
@@ -205,33 +213,48 @@ product_html = """<!DOCTYPE html>
                 }
 
                 document.getElementById('loadingBox').classList.add('hidden');
-                document.title = `${product.name} — NEXBARI`;
+                document.title = `${product.name || 'Product'} — NEXBARI`;
 
                 document.getElementById('crumbCat').textContent = product.category || 'Products';
-                document.getElementById('crumbTitle').textContent = product.name;
-                document.getElementById('pImage').src = product.image_url || 'https://placehold.co/600x600/e2e8f0/475569?text=NEXBARI';
-                document.getElementById('pImage').onerror = function() {
+                document.getElementById('crumbTitle').textContent = product.name || 'Product';
+
+                const imgEl = document.getElementById('pImage');
+                imgEl.src = product.image_url || 'https://placehold.co/600x600/e2e8f0/475569?text=NEXBARI';
+                imgEl.onerror = function () {
+                    this.onerror = null;
                     this.src = 'https://placehold.co/600x600/e2e8f0/475569?text=NEXBARI';
                 };
+
                 document.getElementById('pDiscount').textContent = computeDiscount(product.price, product.old_price);
                 document.getElementById('pBadge').textContent = product.badge || 'Top Pick';
                 document.getElementById('pCategory').textContent = product.category || 'Other';
                 document.getElementById('pRating').innerHTML = `<i class="fa-solid fa-star"></i> ${Number(product.rating || 4.8)} / 5.0`;
-                document.getElementById('pTitle').textContent = product.name;
+                document.getElementById('pTitle').textContent = product.name || 'Unnamed Product';
                 document.getElementById('pPrice').textContent = formatMoney(product.price, product.currency);
                 document.getElementById('pOldPrice').textContent = product.old_price ? formatMoney(product.old_price, product.currency) : '';
                 document.getElementById('pDescription').textContent = product.description || '';
                 document.getElementById('pVerdict').textContent = product.verdict || product.description || 'Verified quality deal curated by NEXBARI.';
-                document.getElementById('pBuyBtn').href = product.affiliate_url || '#';
+
+                const buyUrl = getAffiliateUrl(product);
+                const buyBtn = document.getElementById('pBuyBtn');
+                buyBtn.href = buyUrl;
+                if (buyUrl === '#') {
+                    buyBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        alert('Affiliate link is not set for this product yet.');
+                    });
+                }
 
                 const highlights = Array.isArray(product.highlights) && product.highlights.length
                     ? product.highlights
                     : ['Verified quality product', 'Best available deal price'];
-                document.getElementById('pHighlights').innerHTML = highlights.map(h => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i><span>${esc(h)}</span></li>`).join('');
+                document.getElementById('pHighlights').innerHTML = highlights
+                    .map(h => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i><span>${esc(h)}</span></li>`)
+                    .join('');
 
                 document.getElementById('productContainer').classList.remove('hidden');
 
-                renderRelatedProducts(data || [], product.category, product.id);
+                renderRelatedProducts(list, product.category, product.id);
             } catch (err) {
                 showNotFound('Failed to load product details.');
             }
@@ -250,7 +273,7 @@ product_html = """<!DOCTYPE html>
 
             grid.innerHTML = related.map(p => `
                 <a href="product.html?id=${encodeURIComponent(p.id)}" class="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-md transition flex flex-col">
-                    <img src="${esc(p.image_url || 'https://placehold.co/400x300')}" onerror="this.src='https://placehold.co/400x300'" class="w-full h-40 object-cover bg-slate-100" alt="${esc(p.name)}">
+                    <img src="${esc(p.image_url || 'https://placehold.co/400x300')}" onerror="this.onerror=null;this.src='https://placehold.co/400x300'" class="w-full h-40 object-cover bg-slate-100" alt="${esc(p.name)}">
                     <div class="p-4 flex-1 flex flex-col justify-between">
                         <h3 class="font-bold text-sm text-slate-900 line-clamp-2 mb-2">${esc(p.name)}</h3>
                         <div class="font-extrabold text-brand-600 text-base">${esc(formatMoney(p.price, p.currency))}</div>
@@ -305,9 +328,4 @@ product_html = """<!DOCTYPE html>
         });
     </script>
 </body>
-</html>"""
-
-with open("product-v2.html", "w", encoding="utf-8") as f:
-    f.write(product_html)
-
-print("product-v2.html generated")
+</html>
