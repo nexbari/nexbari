@@ -47,7 +47,7 @@
   <!-- TAB 1: PRODUCT MANAGEMENT -->
   <div id="sectionProducts" class="space-y-6">
    <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
-    <div><h1 class="text-2xl font-black">Product Management</h1><p class="text-sm text-slate-500">Add, edit and publish products to your customer website</p></div>
+    <div><h1 class="text-2xl font-black">Product Management</h1><p class="text-sm text-slate-500">Add, edit, copy individual product page links, and publish products</p></div>
     <button id="newBtn" class="bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-semibold shadow-sm hover:bg-indigo-700 transition">+ Add Product</button>
    </div>
    <div class="grid sm:grid-cols-3 gap-4 mb-6">
@@ -56,8 +56,8 @@
     <div class="bg-white p-5 rounded-2xl shadow-sm"><div class="text-sm text-slate-500">Featured products</div><div id="featuredCount" class="text-3xl font-black">0</div></div>
    </div>
    <div class="bg-white rounded-2xl p-4 md:p-6 overflow-x-auto shadow-sm">
-    <div class="flex justify-between gap-3 mb-4"><h2 class="font-bold">Products</h2><input id="search" placeholder="Search products..." class="border rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-500"></div>
-    <table class="w-full text-sm text-left"><thead><tr class="border-b text-slate-500"><th class="p-3">Product</th><th class="p-3">Category</th><th class="p-3">Price</th><th class="p-3">Status</th><th class="p-3">Actions</th></tr></thead><tbody id="productRows"></tbody></table>
+    <div class="flex justify-between gap-3 mb-4"><h2 class="font-bold">Products & Individual Page Links</h2><input id="search" placeholder="Search products..." class="border rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-500"></div>
+    <table class="w-full text-sm text-left"><thead><tr class="border-b text-slate-500"><th class="p-3">Product</th><th class="p-3">Category</th><th class="p-3">Price</th><th class="p-3">Status</th><th class="p-3">Page Link & Actions</th></tr></thead><tbody id="productRows"></tbody></table>
     <p id="tableMsg" class="text-sm text-slate-500 py-5">Loading...</p>
    </div>
   </div>
@@ -194,7 +194,7 @@
    </div>
 
    <div class="bg-white rounded-2xl p-6 shadow-sm space-y-6 border border-slate-200">
-    <p id="adsMsg" class="text-sm font-semibold text-emerald-600"></p>
+    <div id="adsStatusBox" class="hidden p-3.5 rounded-xl text-sm font-semibold"></div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
      <!-- Slot 1 -->
@@ -284,7 +284,7 @@ async function loadAnalyticsData() {
     let stats = { pageViews: 0, uniqueVisitors: 0, affiliateClicks: 0 };
     
     try {
-        const { data, error } = await db.from('analytics').select('*').order('created_at', { ascending: false }).limit(50);
+        const { data } = await db.from('analytics').select('*').order('created_at', { ascending: false }).limit(50);
         if (data && data.length > 0) {
             logs = data;
         } else {
@@ -308,12 +308,10 @@ async function loadAnalyticsData() {
     $('statPageViews').textContent = stats.pageViews || logs.length || 1;
     $('statUniqueVisitors').textContent = stats.uniqueVisitors || Math.max(1, Math.floor((stats.pageViews || 1) * 0.7));
     
-    // Calculate total affiliate clicks from products
     let totalClicks = 0;
     products.forEach(p => totalClicks += (p.clicks || 0));
     $('statAffiliateClicks').textContent = stats.affiliateClicks || totalClicks || 12;
 
-    // Render Table
     const tbody = $('visitorLogTable');
     if (logs.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400">No visitor logs recorded yet. Visit your storefront to generate live data!</td></tr>`;
@@ -342,29 +340,37 @@ function clearAnalyticsData() {
     }
 }
 
+function showAdsStatus(message, type) {
+    const box = $('adsStatusBox');
+    box.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-200', 'bg-rose-50', 'text-rose-700', 'border-rose-200', 'bg-indigo-50', 'text-indigo-700', 'border-indigo-200');
+    box.classList.add('border');
+    if (type === 'error') {
+        box.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
+    } else if (type === 'loading') {
+        box.classList.add('bg-indigo-50', 'text-indigo-700', 'border-indigo-200');
+    } else {
+        box.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
+    }
+    box.textContent = message;
+}
+
 async function loadAdSettings() {
     try {
-        const { data } = await db.from('settings').select('*').eq('key', 'ads_config').maybeSingle();
-        if (data && data.value) {
+        const { data, error } = await db.from('settings').select('*').eq('key', 'ads_config').maybeSingle();
+        if (!error && data && data.value) {
             const ads = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
             $('adTop').value = ads.top || '';
             $('adInfeed').value = ads.infeed || '';
             $('adSidebar').value = ads.sidebar || '';
             $('adFooter').value = ads.footer || '';
-        } else {
-            const localAds = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
-            $('adTop').value = localAds.top || '';
-            $('adInfeed').value = localAds.infeed || '';
-            $('adSidebar').value = localAds.sidebar || '';
-            $('adFooter').value = localAds.footer || '';
+            return;
         }
-    } catch (e) {
-        const localAds = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
-        $('adTop').value = localAds.top || '';
-        $('adInfeed').value = localAds.infeed || '';
-        $('adSidebar').value = localAds.sidebar || '';
-        $('adFooter').value = localAds.footer || '';
-    }
+    } catch (e) {}
+    const localAds = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
+    $('adTop').value = localAds.top || '';
+    $('adInfeed').value = localAds.infeed || '';
+    $('adSidebar').value = localAds.sidebar || '';
+    $('adFooter').value = localAds.footer || '';
 }
 
 async function saveAdSettings() {
@@ -374,13 +380,33 @@ async function saveAdSettings() {
         sidebar: $('adSidebar').value,
         footer: $('adFooter').value
     };
-    $('adsMsg').textContent = 'Saving ad settings...';
+    showAdsStatus('Saving ad settings to Supabase...', 'loading');
     localStorage.setItem('nexbari_ads_config', JSON.stringify(ads));
     try {
-        await db.from('settings').upsert({ key: 'ads_config', value: ads });
-    } catch (e) {}
-    $('adsMsg').textContent = 'Ad codes saved & published successfully!';
-    setTimeout(() => { $('adsMsg').textContent = ''; }, 3500);
+        const { error } = await db.from('settings').upsert({ key: 'ads_config', value: ads });
+        if (error) {
+            showAdsStatus('Database Error: ' + error.message + ' — Supabase-এ settings টেবিল ও পারমিশন চেক করুন।', 'error');
+            return;
+        }
+        showAdsStatus('Ad codes saved & published live to all visitors!', 'success');
+        setTimeout(() => { $('adsStatusBox').classList.add('hidden'); }, 4500);
+    } catch (e) {
+        showAdsStatus('Unexpected Error: ' + e.message, 'error');
+    }
+}
+
+function getProductPageUrl(id) {
+    const base = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+    return `${base}product.html?id=${encodeURIComponent(id)}`;
+}
+
+function copyProductUrl(id, btn) {
+    const url = getProductPageUrl(id);
+    navigator.clipboard.writeText(url).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+    });
 }
 
 function money(value,currency){return new Intl.NumberFormat('en-US',{style:'currency',currency:currency||'BDT',maximumFractionDigits:2}).format(Number(value||0));}
@@ -390,7 +416,7 @@ async function checkAdmin(){const {data:{session}}=await db.auth.getSession();if
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginMsg').textContent='Signing in...';const {data,error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error){$('loginMsg').textContent=error.message;return;}const {data:role}=await db.from('user_roles').select('role').eq('user_id',data.user.id).maybeSingle();if(role?.role!=='admin'){await db.auth.signOut();$('loginMsg').textContent='এই user-এর admin role নেই।';return;}showApp(data.user);});
 $('logoutBtn').onclick=async()=>{await db.auth.signOut();showLogin();};
 async function loadProducts(){ $('tableMsg').textContent='Loading...';const {data,error}=await db.from('products').select('*').order('created_at',{ascending:false});if(error){$('tableMsg').textContent='Database error: '+error.message;return;}products=data||[];render();}
-function render(){const q=$('search').value.toLowerCase();const list=products.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q));$('totalCount').textContent=products.length;$('activeCount').textContent=products.filter(p=>p.active).length;$('featuredCount').textContent=products.filter(p=>p.featured).length;$('productRows').innerHTML=list.map(p=>`<tr class="border-b"><td class="p-3"><div class="font-semibold">${esc(p.name)}</div><div class="text-xs text-slate-400">${esc(p.marketplace||'')}</div></td><td class="p-3">${esc(p.category||'')}</td><td class="p-3 font-semibold">${money(p.price,p.currency)}</td><td class="p-3">${p.active?'🟢 Active':'⚪ Draft'}</td><td class="p-3 whitespace-nowrap"><button data-edit="${p.id}" class="text-indigo-600 font-semibold mr-3">Edit</button><button data-delete="${p.id}" class="text-rose-600">Delete</button></td></tr>`).join('');$('tableMsg').textContent=list.length?'':'No products found';document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editProduct(b.dataset.edit));document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteProduct(b.dataset.delete));}
+function render(){const q=$('search').value.toLowerCase();const list=products.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q));$('totalCount').textContent=products.length;$('activeCount').textContent=products.filter(p=>p.active).length;$('featuredCount').textContent=products.filter(p=>p.featured).length;$('productRows').innerHTML=list.map(p=>`<tr class="border-b"><td class="p-3"><div class="font-semibold">${esc(p.name)}</div><div class="text-xs text-slate-400">${esc(p.marketplace||'')}</div></td><td class="p-3">${esc(p.category||'')}</td><td class="p-3 font-semibold">${money(p.price,p.currency)}</td><td class="p-3">${p.active?'🟢 Active':'⚪ Draft'}</td><td class="p-3 whitespace-nowrap"><a href="product.html?id=${encodeURIComponent(p.id)}" target="_blank" class="text-emerald-600 font-semibold mr-3 hover:underline">Open Page</a><button type="button" onclick="copyProductUrl('${esc(p.id)}', this)" class="text-slate-700 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded text-xs font-semibold mr-3">Copy Link</button><button data-edit="${p.id}" class="text-indigo-600 font-semibold mr-3">Edit</button><button data-delete="${p.id}" class="text-rose-600">Delete</button></td></tr>`).join('');$('tableMsg').textContent=list.length?'':'No products found';document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editProduct(b.dataset.edit));document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteProduct(b.dataset.delete));}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 $('search').oninput=render;
 function openModal(){ $('productModal').classList.remove('hidden'); }
