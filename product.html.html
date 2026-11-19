@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details — NEXBARI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 900: '#1e1b4b' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <span class="font-display font-extrabold text-xl text-slate-900">NEX<span class="text-brand-600">BARI</span></span>
+            </a>
+            <a href="index.html" class="text-xs sm:text-sm font-semibold text-slate-600 hover:text-brand-600 flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-left"></i> Back to All Deals
+            </a>
+        </div>
+    </header>
+
+    <!-- TOP AD SLOT -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div id="ad-slot-top-leaderboard" class="min-h-[90px] bg-white rounded-xl border border-dashed border-slate-300 flex items-center justify-center text-xs text-slate-400 overflow-hidden"></div>
+    </div>
+
+    <!-- MAIN PRODUCT SECTION -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Loading -->
+        <div id="loadingBox" class="bg-white rounded-2xl border border-slate-200 p-16 text-center">
+            <div class="w-10 h-10 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mx-auto mb-3"></div>
+            <p class="text-sm font-semibold text-slate-600">Loading product details...</p>
+        </div>
+
+        <!-- Not Found -->
+        <div id="notFoundBox" class="hidden bg-white rounded-2xl border border-slate-200 p-16 text-center space-y-4">
+            <i class="fa-solid fa-box-open text-4xl text-slate-300"></i>
+            <h1 class="font-display font-bold text-2xl text-slate-900">Product Not Found</h1>
+            <p class="text-sm text-slate-500">The product link may have expired or been removed.</p>
+            <a href="index.html" class="inline-block px-6 py-2.5 bg-brand-600 text-white text-sm font-bold rounded-xl">Browse Storefront</a>
+        </div>
+
+        <!-- Product Details Content -->
+        <div id="productContainer" class="hidden space-y-8">
+            <!-- Breadcrumb -->
+            <nav class="text-xs text-slate-500 flex items-center gap-2">
+                <a href="index.html" class="hover:text-brand-600">Home</a>
+                <span>/</span>
+                <span id="crumbCat" class="font-semibold text-brand-600">Category</span>
+                <span>/</span>
+                <span id="crumbTitle" class="truncate max-w-[200px] sm:max-w-md text-slate-700">Product</span>
+            </nav>
+
+            <!-- Product Card -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 sm:p-8 lg:p-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Left Image -->
+                    <div class="lg:col-span-5 relative bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 aspect-square flex items-center justify-center">
+                        <img id="pImage" src="" alt="Product" class="w-full h-full object-cover">
+                        <span id="pDiscount" class="absolute top-4 right-4 bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-xl">HOT DEAL</span>
+                    </div>
+
+                    <!-- Right Info -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <span id="pBadge" class="text-xs font-bold px-3 py-1 rounded-lg bg-indigo-100 text-indigo-800">Top Pick</span>
+                            <span id="pCategory" class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">Category</span>
+                            <span id="pRating" class="text-xs font-bold text-amber-500 flex items-center gap-1"><i class="fa-solid fa-star"></i> 4.8</span>
+                        </div>
+
+                        <h1 id="pTitle" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 leading-tight"></h1>
+
+                        <div class="flex items-baseline gap-3 pt-1">
+                            <span id="pPrice" class="text-3xl font-black text-brand-600"></span>
+                            <span id="pOldPrice" class="text-base text-slate-400 line-through"></span>
+                        </div>
+
+                        <p id="pDescription" class="text-sm sm:text-base text-slate-600 leading-relaxed"></p>
+
+                        <!-- Highlights -->
+                        <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 sm:p-5">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-2.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-check text-emerald-600"></i> Key Highlights
+                            </h3>
+                            <ul id="pHighlights" class="space-y-2 text-xs sm:text-sm text-emerald-950"></ul>
+                        </div>
+
+                        <!-- Verdict -->
+                        <div id="pVerdictBox" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 mb-1">NEXBARI Editor's Verdict</h3>
+                            <p id="pVerdict" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
+                        </div>
+
+                        <!-- Buy & Share Actions -->
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <a id="pBuyBtn" href="#" target="_blank" rel="nofollow sponsored" class="flex-1 py-4 px-6 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-brand-600/25 transition">
+                                <span>Buy Now</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                            <button onclick="copyProductLink()" id="copyLinkBtn" class="py-4 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-share-nodes"></i>
+                                <span id="copyBtnText">Copy Product Link</span>
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Affiliate Disclosure: Clicking Buy Now redirects to the official checkout page at no extra cost to you.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IN-FEED AD SLOT -->
+            <div id="ad-slot-infeed" class="min-h-[100px] bg-white rounded-xl border border-dashed border-slate-300 flex items-center justify-center text-xs text-slate-400 overflow-hidden"></div>
+
+            <!-- RELATED PRODUCTS -->
+            <section class="pt-4">
+                <h2 class="font-display font-bold text-xl text-slate-900 mb-4">Related Products You May Like</h2>
+                <div id="relatedGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 mt-12 text-center border-t border-slate-800">
+        <p>© <span id="yearSpan"></span> NEXBARI. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const SUPABASE_URL = 'https://qusfiwelalnowycozchb.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_rSi58hS-FK8myU9ylWl-rA_wzPopywo';
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function esc(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' }[c]));
+        }
+
+        function formatMoney(value, currency) {
+            if (value === null || value === undefined || value === '') return '';
+            const num = Number(value);
+            if (isNaN(num)) return String(value);
+            if ((currency || 'BDT') === 'BDT') return '৳' + num.toLocaleString('en-US', { maximumFractionDigits: 2 });
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency, maximumFractionDigits: 2 }).format(num);
+        }
+
+        function computeDiscount(price, oldPrice) {
+            const p = Number(price), oldP = Number(oldPrice);
+            if (p && oldP && oldP > p) return Math.round(((oldP - p) / oldP) * 100) + '% OFF';
+            return 'HOT DEAL';
+        }
+
+        async function initProductPage() {
+            document.getElementById('yearSpan').textContent = new Date().getFullYear();
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+
+            if (!productId) {
+                document.getElementById('loadingBox').classList.add('hidden');
+                document.getElementById('notFoundBox').classList.remove('hidden');
+                return;
+            }
+
+            const { data: product, error } = await db
+                .from('products')
+                .select('*')
+                .eq('id', productId)
+                .eq('active', true)
+                .maybeSingle();
+
+            document.getElementById('loadingBox').classList.add('hidden');
+
+            if (error || !product) {
+                document.getElementById('notFoundBox').classList.remove('hidden');
+                return;
+            }
+
+            document.title = `${product.name} — NEXBARI`;
+
+            document.getElementById('crumbCat').textContent = product.category || 'Products';
+            document.getElementById('crumbTitle').textContent = product.name;
+            document.getElementById('pImage').src = product.image_url || 'https://placehold.co/600x600/e2e8f0/475569?text=NEXBARI';
+            document.getElementById('pDiscount').textContent = computeDiscount(product.price, product.old_price);
+            document.getElementById('pBadge').textContent = product.badge || 'Top Pick';
+            document.getElementById('pCategory').textContent = product.category || 'Other';
+            document.getElementById('pRating').innerHTML = `<i class="fa-solid fa-star"></i> ${Number(product.rating || 4.8)} / 5.0`;
+            document.getElementById('pTitle').textContent = product.name;
+            document.getElementById('pPrice').textContent = formatMoney(product.price, product.currency);
+            document.getElementById('pOldPrice').textContent = product.old_price ? formatMoney(product.old_price, product.currency) : '';
+            document.getElementById('pDescription').textContent = product.description || '';
+            document.getElementById('pVerdict').textContent = product.verdict || product.description || 'Verified quality deal curated by NEXBARI.';
+            document.getElementById('pBuyBtn').href = product.affiliate_url || '#';
+
+            const highlights = Array.isArray(product.highlights) && product.highlights.length
+                ? product.highlights
+                : ['Verified quality product', 'Best available deal price'];
+            document.getElementById('pHighlights').innerHTML = highlights.map(h => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i><span>${esc(h)}</span></li>`).join('');
+
+            document.getElementById('productContainer').classList.remove('hidden');
+
+            loadRelatedProducts(product.category, product.id);
+        }
+
+        async function loadRelatedProducts(category, currentId) {
+            const { data } = await db
+                .from('products')
+                .select('*')
+                .eq('active', true)
+                .eq('category', category)
+                .neq('id', currentId)
+                .limit(4);
+
+            const grid = document.getElementById('relatedGrid');
+            if (!data || data.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-slate-400 col-span-full">No related products in this category yet.</p>';
+                return;
+            }
+
+            grid.innerHTML = data.map(p => `
+                <a href="product.html?id=${encodeURIComponent(p.id)}" class="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-md transition flex flex-col">
+                    <img src="${esc(p.image_url || 'https://placehold.co/400x300')}" class="w-full h-40 object-cover bg-slate-100" alt="${esc(p.name)}">
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <h3 class="font-bold text-sm text-slate-900 line-clamp-2 mb-2">${esc(p.name)}</h3>
+                        <div class="font-extrabold text-brand-600 text-base">${esc(formatMoney(p.price, p.currency))}</div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function copyProductLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const btnText = document.getElementById('copyBtnText');
+                btnText.textContent = 'Link Copied!';
+                setTimeout(() => { btnText.textContent = 'Copy Product Link'; }, 2500);
+            });
+        }
+
+        async function loadStoredAds() {
+            try {
+                let ads = null;
+                const { data, error } = await db.from('settings').select('*').eq('key', 'ads_config').maybeSingle();
+                if (!error && data && data.value) {
+                    ads = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+                } else {
+                    ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
+                }
+                if (ads) {
+                    injectAdCode('ad-slot-top-leaderboard', ads.top);
+                    injectAdCode('ad-slot-infeed', ads.infeed);
+                }
+            } catch (e) {}
+        }
+
+        function injectAdCode(containerId, htmlCode) {
+            const container = document.getElementById(containerId);
+            if (!container || !htmlCode || !htmlCode.trim()) return;
+            container.innerHTML = htmlCode.trim();
+            container.classList.remove('flex', 'items-center', 'justify-center', 'text-xs', 'text-slate-400');
+            container.querySelectorAll('script').forEach(oldScript => {
+                const newScript = document
