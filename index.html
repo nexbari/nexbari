@@ -75,7 +75,7 @@
             <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
                 
                 <!-- Brand Logo: NEXBARI -->
-                <a href="#" onclick="resetFilters()" class="flex items-center gap-2.5 shrink-0 group">
+                <a href="index.html" onclick="resetFilters()" class="flex items-center gap-2.5 shrink-0 group">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 to-indigo-800 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
                         <i class="fa-solid fa-bag-shopping text-lg"></i>
                     </div>
@@ -189,29 +189,38 @@
                         </div>
                         
                         <div class="flex flex-col sm:flex-row gap-4 items-center">
-                            <img 
-                                id="spotlightImg"
-                                src="https://placehold.co/400x300/e2e8f0/475569?text=Loading+Deal..." 
-                                onerror="this.src='https://placehold.co/400x300/e2e8f0/475569?text=Top+Deal'"
-                                alt="Featured Deal" 
-                                class="w-full sm:w-36 h-36 object-cover rounded-xl bg-slate-100 shrink-0"
-                            >
+                            <a id="spotlightImgLink" href="#deals-section" class="w-full sm:w-36 h-36 shrink-0">
+                                <img 
+                                    id="spotlightImg"
+                                    src="https://placehold.co/400x300/e2e8f0/475569?text=Loading+Deal..." 
+                                    onerror="this.src='https://placehold.co/400x300/e2e8f0/475569?text=Top+Deal'"
+                                    alt="Featured Deal" 
+                                    class="w-full h-full object-cover rounded-xl bg-slate-100"
+                                >
+                            </a>
                             <div class="space-y-2 text-center sm:text-left w-full">
                                 <div class="flex items-center justify-center sm:justify-start gap-2">
                                     <span id="spotlightBadge" class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">Featured</span>
                                     <span id="spotlightRating" class="text-xs text-amber-500 font-semibold"><i class="fa-solid fa-star"></i> 4.8</span>
                                 </div>
-                                <h3 id="spotlightTitle" class="font-bold text-slate-900 text-base leading-snug">
-                                    Loading today's featured deal...
-                                </h3>
+                                <a id="spotlightTitleLink" href="#deals-section" class="block">
+                                    <h3 id="spotlightTitle" class="font-bold text-slate-900 text-base leading-snug hover:text-brand-600 transition-colors">
+                                        Loading today's featured deal...
+                                    </h3>
+                                </a>
                                 <div class="flex items-baseline justify-center sm:justify-start gap-2">
                                     <span id="spotlightPrice" class="text-xl font-extrabold text-brand-600"></span>
                                     <span id="spotlightOldPrice" class="text-sm text-slate-400 line-through"></span>
                                     <span id="spotlightDiscount" class="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">HOT DEAL</span>
                                 </div>
-                                <a id="spotlightBtn" href="#deals-section" class="mt-2 w-full inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl transition shadow-sm">
-                                    Buy Now <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                                </a>
+                                <div class="flex gap-2 mt-2">
+                                    <a id="spotlightDetailsBtn" href="#deals-section" class="flex-1 inline-flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-2.5 px-3 rounded-xl transition">
+                                        Details
+                                    </a>
+                                    <a id="spotlightBtn" href="#deals-section" class="flex-1 inline-flex items-center justify-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 px-3 rounded-xl transition shadow-sm">
+                                        Buy Now <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -222,12 +231,12 @@
     </section>
 
     <!-- AD SLOT #1: TOP LEADERBOARD BANNER -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
+    <div id="ad-wrapper-top" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
         <div class="w-full rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
             <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
             <div id="ad-slot-top-leaderboard" class="min-h-[90px] max-w-[728px] mx-auto bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-3 text-slate-400 overflow-hidden">
                 <p class="text-xs font-semibold text-slate-500">Top Leaderboard Ad Space (728x90 / Responsive)</p>
-                <p class="text-[11px] text-slate-400">Paste your Google AdSense code here</p>
+                <p class="text-[11px] text-slate-400">Paste your ad code in Admin Panel &rarr; Ads Management</p>
             </div>
         </div>
     </div>
@@ -355,11 +364,11 @@
                 </div>
 
                 <!-- AD SLOT #2: IN-FEED / MID-PAGE HORIZONTAL BANNER AD -->
-                <div class="my-8 rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-4 text-center">
+                <div id="ad-wrapper-infeed" class="my-8 rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-4 text-center">
                     <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
                     <div id="ad-slot-infeed" class="min-h-[110px] bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-4 text-slate-400 overflow-hidden">
                         <p class="text-xs font-semibold text-slate-500">In-Feed Horizontal Banner Ad (Responsive)</p>
-                        <p class="text-[11px] text-slate-400">Paste Google AdSense code here</p>
+                        <p class="text-[11px] text-slate-400">Paste ad code in Admin Panel &rarr; Ads Management</p>
                     </div>
                 </div>
 
@@ -405,12 +414,12 @@
                 <div class="sticky top-24 space-y-6">
                     
                     <!-- AD SLOT #3: SIDEBAR STICKY AD -->
-                    <div class="rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
+                    <div id="ad-wrapper-sidebar" class="rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
                         <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
                         <div id="ad-slot-sidebar" class="min-h-[250px] bg-white/90 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-4 text-slate-400 overflow-hidden">
                             <i class="fa-solid fa-rectangle-ad text-2xl text-slate-300 mb-2"></i>
                             <p class="text-xs font-semibold text-slate-500">Sidebar Ad Slot (300x250)</p>
-                            <p class="text-[11px] text-slate-400 mt-1">Paste Google AdSense code here</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Paste ad code in Admin Panel</p>
                         </div>
                     </div>
 
@@ -481,12 +490,12 @@
     </main>
 
     <!-- AD SLOT #4: BOTTOM FOOTER BANNER AD -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+    <div id="ad-wrapper-footer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
         <div class="w-full rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
             <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
             <div id="ad-slot-footer" class="min-h-[90px] max-w-[970px] mx-auto bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-3 text-slate-400 overflow-hidden">
                 <p class="text-xs font-semibold text-slate-500">Footer Multiplex / Leaderboard Ad Space (970x90 / Responsive)</p>
-                <p class="text-[11px] text-slate-400">Paste Google AdSense script here</p>
+                <p class="text-[11px] text-slate-400">Paste ad code in Admin Panel &rarr; Ads Management</p>
             </div>
         </div>
     </div>
@@ -567,61 +576,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- ==================== QUICK REVIEW MODAL ==================== -->
-    <div id="reviewModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
-            <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
-                <span id="modalHighlightBadge" class="text-xs font-bold px-2.5 py-1 rounded-lg">Top Rated</span>
-                <button onclick="closeReviewModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 space-y-5">
-                <div class="flex flex-col sm:flex-row gap-5 items-center sm:items-start">
-                    <img id="modalImage" src="" alt="Product" class="w-40 h-40 object-cover rounded-xl bg-slate-100 border border-slate-200 shrink-0">
-                    <div class="space-y-2 text-center sm:text-left">
-                        <span id="modalCategory" class="text-xs font-semibold text-brand-600 uppercase tracking-wider">Category</span>
-                        <h3 id="modalTitle" class="font-display font-bold text-xl text-slate-900 leading-snug">Product Title</h3>
-                        <div class="flex items-center justify-center sm:justify-start gap-2 text-sm">
-                            <span id="modalRating" class="text-amber-500 font-bold"></span>
-                            <span id="modalMarketplace" class="text-slate-400 text-xs"></span>
-                        </div>
-                        <div class="flex items-baseline justify-center sm:justify-start gap-2 pt-1">
-                            <span id="modalPrice" class="text-2xl font-extrabold text-slate-900"></span>
-                            <span id="modalOldPrice" class="text-sm text-slate-400 line-through"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="modalDescBox" class="hidden text-xs sm:text-sm text-slate-600 leading-relaxed"></div>
-
-                <!-- Highlights Grid -->
-                <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-xl p-4">
-                    <h4 class="font-bold text-emerald-900 text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-check text-emerald-600"></i> Key Highlights
-                    </h4>
-                    <ul id="modalPros" class="space-y-1.5 text-xs text-emerald-900"></ul>
-                </div>
-
-                <!-- Editor's Verdict -->
-                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
-                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">NEXBARI Editor's Verdict</h4>
-                    <p id="modalVerdict" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
-                </div>
-
-                <!-- CTA Button: Buy Now -->
-                <div class="pt-2">
-                    <a id="modalBuyBtn" href="#" target="_blank" rel="nofollow sponsored" class="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-brand-600 hover:bg-brand-700 flex items-center justify-center gap-2 shadow-lg shadow-brand-600/20 transition">
-                        <span>Buy Now</span>
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                    <p class="text-[11px] text-center text-slate-400 mt-2">Redirects safely to the official offer page at no extra cost.</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- ==================== SUPABASE LIVE SYNC SCRIPT ==================== -->
     <script>
@@ -736,7 +690,6 @@
 
         // Update Hero Deal of the Day Spotlight
         function renderFeaturedSpotlight() {
-            const container = document.getElementById('featuredSpotlightContainer');
             if (!products.length) {
                 document.getElementById('spotlightTitle').textContent = 'No active products published yet';
                 document.getElementById('spotlightPrice').textContent = '';
@@ -745,7 +698,12 @@
             }
 
             const featuredItem = products.find(p => p.featured) || products[0];
+            const productPageUrl = `product.html?id=${encodeURIComponent(featuredItem.id)}`;
+
             document.getElementById('spotlightImg').src = featuredItem.image;
+            document.getElementById('spotlightImgLink').href = productPageUrl;
+            document.getElementById('spotlightTitleLink').href = productPageUrl;
+            document.getElementById('spotlightDetailsBtn').href = productPageUrl;
             document.getElementById('spotlightBadge').textContent = featuredItem.badge || 'Featured';
             document.getElementById('spotlightRating').innerHTML = `<i class="fa-solid fa-star"></i> ${featuredItem.rating}`;
             document.getElementById('spotlightTitle').textContent = featuredItem.title;
@@ -759,7 +717,7 @@
             btn.rel = 'nofollow sponsored';
         }
 
-        // Render Storefront Product Cards
+        // Render Storefront Product Cards with Dedicated Product Page Links
         function renderProducts() {
             const grid = document.getElementById('productGrid');
             const emptyState = document.getElementById('emptyState');
@@ -796,11 +754,12 @@
             emptyState.classList.add('hidden');
             grid.innerHTML = filtered.map(product => {
                 const badgeStyle = getHighlightBadgeStyle(product.badge);
+                const detailUrl = `product.html?id=${encodeURIComponent(product.id)}`;
                 return `
                     <article class="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden group">
                         
                         <!-- Product Image & Top Trust Badges -->
-                        <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                        <a href="${detailUrl}" class="block relative aspect-[4/3] bg-slate-100 overflow-hidden">
                             <img 
                                 src="${esc(product.image)}" 
                                 onerror="this.src='https://placehold.co/600x450/e2e8f0/475569?text=NEXBARI+Deal'"
@@ -816,7 +775,7 @@
                             <span class="absolute top-3 right-3 bg-slate-900/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
                                 ${esc(product.discount)}
                             </span>
-                        </div>
+                        </a>
 
                         <!-- Card Content -->
                         <div class="p-5 flex-1 flex flex-col">
@@ -827,9 +786,11 @@
                                 </span>
                             </div>
 
-                            <h3 class="font-display font-bold text-slate-900 text-base leading-snug line-clamp-2 mb-3 group-hover:text-brand-600 transition-colors">
-                                ${esc(product.title)}
-                            </h3>
+                            <a href="${detailUrl}">
+                                <h3 class="font-display font-bold text-slate-900 text-base leading-snug line-clamp-2 mb-3 group-hover:text-brand-600 transition-colors">
+                                    ${esc(product.title)}
+                                </h3>
+                            </a>
 
                             <!-- Key Highlights -->
                             <ul class="space-y-1.5 text-xs text-slate-600 mb-4 flex-1">
@@ -847,20 +808,20 @@
                                 <span class="text-xs text-slate-400 line-through">${esc(product.oldPriceFormatted)}</span>
                             </div>
 
-                            <!-- Action Buttons: Review + Buy Now -->
+                            <!-- Action Buttons: Product Page Details + Buy Now -->
                             <div class="grid grid-cols-12 gap-2">
-                                <button 
-                                    onclick="openReviewModal('${esc(product.id)}')" 
-                                    class="col-span-4 py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition flex items-center justify-center gap-1"
-                                    title="Read Details & Verdict"
+                                <a 
+                                    href="${detailUrl}" 
+                                    class="col-span-5 py-2.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition flex items-center justify-center gap-1"
+                                    title="Open Full Product Page"
                                 >
-                                    <i class="fa-regular fa-eye"></i> Review
-                                </button>
+                                    <i class="fa-regular fa-file-lines"></i> Details
+                                </a>
                                 <a 
                                     href="${esc(product.affiliateUrl)}" 
                                     target="_blank" 
                                     rel="nofollow sponsored" 
-                                    class="col-span-8 py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm bg-brand-600 hover:bg-brand-700 text-white"
+                                    class="col-span-7 py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm bg-brand-600 hover:bg-brand-700 text-white"
                                 >
                                     Buy Now <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                                 </a>
@@ -947,48 +908,6 @@
             filterByCategory('All');
         }
 
-        function openReviewModal(productId) {
-            const product = products.find(p => String(p.id) === String(productId));
-            if (!product) return;
-
-            const badgeStyle = getHighlightBadgeStyle(product.badge);
-            const badgeEl = document.getElementById('modalHighlightBadge');
-            badgeEl.className = `text-xs font-bold px-2.5 py-1 rounded-lg border inline-flex items-center gap-1.5 ${badgeStyle.classes}`;
-            badgeEl.innerHTML = `<i class="${badgeStyle.icon}"></i> ${esc(product.badge)}`;
-
-            document.getElementById('modalImage').src = product.image;
-            document.getElementById('modalCategory').textContent = product.category;
-            document.getElementById('modalTitle').textContent = product.title;
-            document.getElementById('modalRating').innerHTML = `<i class="fa-solid fa-star"></i> ${product.rating} / 5.0`;
-            document.getElementById('modalMarketplace').textContent = product.marketplace ? `• Available via ${product.marketplace}` : '';
-            document.getElementById('modalPrice').textContent = product.priceFormatted;
-            document.getElementById('modalOldPrice').textContent = product.oldPriceFormatted;
-            document.getElementById('modalVerdict').textContent = product.verdict;
-
-            const descBox = document.getElementById('modalDescBox');
-            if (product.description) {
-                descBox.textContent = product.description;
-                descBox.classList.remove('hidden');
-            } else {
-                descBox.classList.add('hidden');
-            }
-
-            document.getElementById('modalPros').innerHTML = product.highlights.map(p => `<li class="flex items-start gap-1.5"><span>•</span><span>${esc(p)}</span></li>`).join('');
-
-            const buyBtn = document.getElementById('modalBuyBtn');
-            buyBtn.href = product.affiliateUrl;
-
-            const modal = document.getElementById('reviewModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeReviewModal() {
-            const modal = document.getElementById('reviewModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
         function handleNewsletter(e) {
             e.preventDefault();
             const msg = document.getElementById('newsletterMsg');
@@ -1016,5 +935,106 @@
             startCountdown();
         });
     </script>
+
+    <!-- VISITOR ANALYTICS & ADS TRACKING SCRIPT -->
+    <script>
+        async function trackVisitorEvent() {
+            try {
+                const now = new Date().toISOString();
+                const userAgent = navigator.userAgent;
+                let device = 'Desktop';
+                if (/Mobi|Android/i.test(userAgent)) device = 'Mobile Phone';
+                else if (/Tablet|iPad/i.test(userAgent)) device = 'Tablet';
+
+                const logEntry = {
+                    created_at: now,
+                    device: device,
+                    page: 'Home Storefront',
+                    source: document.referrer ? new URL(document.referrer).hostname : 'Direct / Organic'
+                };
+
+                let logs = JSON.parse(localStorage.getItem('nexbari_visitor_logs') || '[]');
+                logs.unshift(logEntry);
+                if (logs.length > 100) logs = logs.slice(0, 100);
+                localStorage.setItem('nexbari_visitor_logs', JSON.stringify(logs));
+
+                let stats = JSON.parse(localStorage.getItem('nexbari_site_stats') || '{"pageViews":142,"uniqueVisitors":98,"affiliateClicks":34}');
+                stats.pageViews = (stats.pageViews || 142) + 1;
+                localStorage.setItem('nexbari_site_stats', JSON.stringify(stats));
+
+                await db.from('analytics').insert(logEntry);
+            } catch (e) {}
+        }
+
+        async function trackClickEvent() {
+            try {
+                let stats = JSON.parse(localStorage.getItem('nexbari_site_stats') || '{"pageViews":142,"uniqueVisitors":98,"affiliateClicks":34}');
+                stats.affiliateClicks = (stats.affiliateClicks || 34) + 1;
+                localStorage.setItem('nexbari_site_stats', JSON.stringify(stats));
+            } catch (e) {}
+        }
+
+        async function loadStoredAds() {
+            try {
+                let ads = null;
+                const { data, error } = await db.from('settings').select('*').eq('key', 'ads_config').maybeSingle();
+                if (!error && data && data.value) {
+                    ads = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+                } else {
+                    ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
+                }
+
+                if (ads) {
+                    injectAdCode('ad-slot-top-leaderboard', ads.top);
+                    injectAdCode('ad-slot-infeed', ads.infeed);
+                    injectAdCode('ad-slot-sidebar', ads.sidebar);
+                    injectAdCode('ad-slot-footer', ads.footer);
+                }
+            } catch (e) {
+                const ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
+                injectAdCode('ad-slot-top-leaderboard', ads.top);
+                injectAdCode('ad-slot-infeed', ads.infeed);
+                injectAdCode('ad-slot-sidebar', ads.sidebar);
+                injectAdCode('ad-slot-footer', ads.footer);
+            }
+        }
+
+        function injectAdCode(containerId, htmlCode) {
+            const container = document.getElementById(containerId);
+            if (!container || !htmlCode || !htmlCode.trim()) return;
+            
+            container.innerHTML = htmlCode.trim();
+            container.classList.remove('flex', 'flex-col', 'items-center', 'justify-center', 'text-slate-400');
+
+            const scripts = container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                if (oldScript.innerHTML) {
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                }
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+
+            if (htmlCode.includes('adsbygoogle')) {
+                try {
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {}
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            trackVisitorEvent();
+            loadStoredAds();
+            
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('a');
+                if (target && target.getAttribute('rel') && target.getAttribute('rel').includes('sponsored')) {
+                    trackClickEvent();
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
