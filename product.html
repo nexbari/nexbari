@@ -100,29 +100,13 @@
                             <span id="pOldPrice" class="text-base text-slate-400 line-through"></span>
                         </div>
 
-                        <p id="pDescription" class="text-sm sm:text-base text-slate-600 leading-relaxed"></p>
+                        <div id="pDescription" class="text-sm sm:text-base text-slate-600 leading-relaxed whitespace-pre-wrap break-words"></div>
 
-                        <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 sm:p-5">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-2.5 flex items-center gap-1.5">
-                                <i class="fa-solid fa-circle-check text-emerald-600"></i> Key Highlights
-                            </h3>
-                            <ul id="pHighlights" class="space-y-2 text-xs sm:text-sm text-emerald-950"></ul>
-                        </div>
-
-                        <div id="pVerdictBox" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 mb-1">NEXBARI Editor's Verdict</h3>
-                            <p id="pVerdict" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                            <a id="pBuyBtn" href="#" target="_blank" rel="nofollow sponsored" class="flex-1 py-4 px-6 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-brand-600/25 transition">
+                        <div class="pt-2">
+                            <a id="pBuyBtn" href="#" target="_blank" rel="nofollow sponsored" class="w-full py-4 px-6 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-brand-600/25 transition">
                                 <span>Buy Now</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                             </a>
-                            <button type="button" onclick="copyProductLink()" id="copyLinkBtn" class="py-4 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm flex items-center justify-center gap-2 transition">
-                                <i class="fa-solid fa-share-nodes"></i>
-                                <span id="copyBtnText">Copy Product Link</span>
-                            </button>
                         </div>
                         <p class="text-[11px] text-slate-400">Affiliate Disclosure: Clicking Buy Now redirects to the official checkout page at no extra cost to you.</p>
                     </div>
@@ -248,7 +232,6 @@
             document.getElementById('pPrice').textContent = formatMoney(product.price, product.currency);
             document.getElementById('pOldPrice').textContent = product.old_price ? formatMoney(product.old_price, product.currency) : '';
             document.getElementById('pDescription').textContent = product.description || '';
-            document.getElementById('pVerdict').textContent = product.verdict || product.description || 'Verified quality deal curated by NEXBARI.';
 
             const buyUrl = getAffiliateUrl(product);
             const buyBtn = document.getElementById('pBuyBtn');
@@ -259,25 +242,6 @@
                     alert('Affiliate link is not set for this product yet.');
                 });
             }
-
-            let highlights = [];
-            if (Array.isArray(product.highlights)) {
-                highlights = product.highlights;
-            } else if (typeof product.highlights === 'string' && product.highlights.trim()) {
-                try {
-                    const parsed = JSON.parse(product.highlights);
-                    highlights = Array.isArray(parsed) ? parsed : product.highlights.split(',');
-                } catch (e) {
-                    highlights = product.highlights.split(',');
-                }
-            }
-            if (!highlights.length) {
-                highlights = ['Verified quality product', 'Best available deal price'];
-            }
-
-            document.getElementById('pHighlights').innerHTML = highlights
-                .map(h => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i><span>${esc(String(h).trim())}</span></li>`)
-                .join('');
 
             document.getElementById('productContainer').classList.remove('hidden');
             renderRelatedProducts(activeList, product.category, product.id);
@@ -329,14 +293,6 @@
                 clearTimeout(safetyTimer);
                 showNotFound('Could not load product from database: ' + (err && err.message ? err.message : 'Unknown error'));
             }
-        }
-
-        function copyProductLink() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                const btnText = document.getElementById('copyBtnText');
-                btnText.textContent = 'Link Copied!';
-                setTimeout(() => { btnText.textContent = 'Copy Product Link'; }, 2500);
-            });
         }
 
         async function loadStoredAds() {
