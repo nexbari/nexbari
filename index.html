@@ -57,15 +57,20 @@
             background-size: 16px 16px;
         }
     </style>
-    <style>
-        /* Adsterra ad slots (hidden until an ad code is configured) */
-        .adx{display:none;text-align:center;margin:1rem auto}
-        .adx.on{display:block}
-        .adx.on::before{content:"Advertisement";display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:6px}
-        .adx-rail{position:fixed;top:7rem;margin:0;z-index:20}
-        .adx-left{left:.5rem}.adx-right{right:.5rem}
-        .adx-smart a{display:inline-block;padding:.65rem 1.1rem;border-radius:.75rem;background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;font-weight:700;font-size:.8rem}
-    </style>
+
+<style>
+/* ===== NEXBARI AD BOXES (exact Adsterra sizes) ===== */
+.nx-ad-label{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;font-weight:600;margin-bottom:4px;text-align:center}
+.nx-ad-slot{margin:0 auto;display:flex;align-items:center;justify-content:center;max-width:100%;box-sizing:border-box;background:#fff;border:1px dashed #cbd5e1;border-radius:8px;color:#94a3b8;font-size:12px;font-weight:600;overflow:hidden}
+.nx-ad-slot.nx-filled{background:transparent;border:0;border-radius:0}
+.nx-ad-native{width:100%;min-height:120px;height:auto}
+.nx-ge-500{display:none}.nx-lt-500{display:block}
+.nx-ge-768{display:none}.nx-lt-768{display:block}
+.nx-ge-1024{display:none}
+@media(min-width:500px){.nx-ge-500{display:block}.nx-lt-500{display:none}}
+@media(min-width:768px){.nx-ge-768{display:block}.nx-lt-768{display:none}}
+@media(min-width:1024px){.nx-ge-1024{display:block}}
+</style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white">
 
@@ -239,20 +244,10 @@
         </div>
     </section>
 
-    <!-- AD SLOT #1: TOP LEADERBOARD BANNER -->
-    <div id="ad-wrapper-top" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6">
-        <div class="w-full rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
-            <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
-            <div id="ad-slot-top-leaderboard" class="min-h-[90px] max-w-[728px] mx-auto bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-3 text-slate-400 overflow-hidden">
-                <p class="text-xs font-semibold text-slate-500">Top Leaderboard Ad Space (728x90 / Responsive)</p>
-                <p class="text-[11px] text-slate-400">Paste your ad code in Admin Panel &rarr; Ads Management</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div data-ad="b728x90" data-media="(min-width:768px)" class="adx"></div>
-        <div data-ad="b320x50" data-media="(max-width:767px)" class="adx"></div>
+    <!-- AD: TOP (728x90 desktop / 320x50 mobile) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="nx-ad-wrap nx-ge-768 my-6"><span class="nx-ad-label">Advertisement</span><div class="nx-ad-slot" data-ad="b728x90" data-w="728" data-h="90" style="width:728px;height:90px"><span>728 &times; 90</span></div></div>
+        <div class="nx-ad-wrap nx-lt-768 my-6"><span class="nx-ad-label">Advertisement</span><div class="nx-ad-slot" data-ad="b320x50" data-w="320" data-h="50" style="width:320px;height:50px"><span>320 &times; 50</span></div></div>
     </div>
 
     <!-- ==================== MAIN CATALOG & SIDEBAR LAYOUT ==================== -->
@@ -350,10 +345,10 @@
         </div>
 
         <!-- Content Grid: 9 Columns Products + 3 Columns Sticky Sidebar -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 mt-8">
             
             <!-- LEFT/MAIN COLUMN: Product Cards Grid -->
-            <div class="lg:col-span-9">
+            <div class="min-w-0">
                 <!-- Loading Spinner -->
                 <div id="loadingState" class="bg-white rounded-2xl border border-slate-200 p-12 text-center my-6">
                     <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mx-auto mb-4"></div>
@@ -377,17 +372,9 @@
                     </button>
                 </div>
 
-                <!-- AD SLOT #2: IN-FEED / MID-PAGE HORIZONTAL BANNER AD -->
-                <div id="ad-wrapper-infeed" class="my-8 rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-4 text-center">
-                    <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
-                    <div id="ad-slot-infeed" class="min-h-[110px] bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-4 text-slate-400 overflow-hidden">
-                        <p class="text-xs font-semibold text-slate-500">In-Feed Horizontal Banner Ad (Responsive)</p>
-                        <p class="text-[11px] text-slate-400">Paste ad code in Admin Panel &rarr; Ads Management</p>
-                    </div>
-                </div>
-
-                <div data-ad="b468x60" data-media="(min-width:640px)" class="adx"></div>
-                <div data-ad="b300x250" data-media="(max-width:639px)" class="adx"></div>
+                <!-- AD: IN-FEED (468x60 / 300x250 on small phones) -->
+                <div class="nx-ad-wrap nx-ge-500 my-8"><span class="nx-ad-label">Advertisement</span><div class="nx-ad-slot" data-ad="b468x60" data-w="468" data-h="60" style="width:468px;height:60px"><span>468 &times; 60</span></div></div>
+                <div class="nx-ad-wrap nx-lt-500 my-8"><span class="nx-ad-label">Advertisement</span><div class="nx-ad-slot" data-ad="b300x250" data-w="300" data-h="250" style="width:300px;height:250px"><span>300 &times; 250</span></div></div>
 
                 <!-- Buying Guides Section -->
                 <section class="mt-10 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
@@ -427,20 +414,11 @@
             </div>
 
             <!-- RIGHT SIDEBAR: Sticky Ad Slots & Popular Categories -->
-            <aside class="lg:col-span-3 space-y-6">
-                <div class="sticky top-24 space-y-6">
+            <aside class="space-y-6">
+                <div class="space-y-6">
                     
-                    <!-- AD SLOT #3: SIDEBAR STICKY AD -->
-                    <div id="ad-wrapper-sidebar" class="rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
-                        <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
-                        <div id="ad-slot-sidebar" class="min-h-[250px] bg-white/90 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-4 text-slate-400 overflow-hidden">
-                            <i class="fa-solid fa-rectangle-ad text-2xl text-slate-300 mb-2"></i>
-                            <p class="text-xs font-semibold text-slate-500">Sidebar Ad Slot (300x250)</p>
-                            <p class="text-[11px] text-slate-400 mt-1">Paste ad code in Admin Panel</p>
-                        </div>
-                    </div>
-
-                    <div data-ad="b300x250" data-media="(min-width:1024px)" class="adx"></div>
+                    <!-- AD: SIDEBAR 300x250 (desktop only) -->
+                    <div class="nx-ad-wrap nx-ge-1024 "><span class="nx-ad-label">Advertisement</span><div class="nx-ad-slot" data-ad="b300x250" data-w="300" data-h="250" style="width:300px;height:250px"><span>300 &times; 250</span></div></div>
 
                     <!-- Explore Top Categories Card -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
@@ -489,8 +467,6 @@
                         </ul>
                     </div>
 
-                    <div data-ad="smartlink" class="adx"></div>
-
                     <!-- Newsletter Box -->
                     <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-5 text-white shadow-md">
                         <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-brand-500/30 text-brand-200 px-2.5 py-1 rounded-md mb-2">Weekly Price Drops</span>
@@ -506,31 +482,25 @@
                     </div>
 
                 </div>
+
+            <!-- AD: SIDEBAR 160x300 -->
+            <div class="nx-ad-wrap  "><span class="nx-ad-label">Advertisement</span><div class="nx-ad-slot" data-ad="b160x300" data-w="160" data-h="300" style="width:160px;height:300px"><span>160 &times; 300</span></div></div>
+
+            <!-- AD: SIDEBAR 160x600 (sticky) -->
+            <div class="lg:sticky lg:top-24">
+                <div class="nx-ad-wrap  "><span class="nx-ad-label">Advertisement</span><div class="nx-ad-slot" data-ad="b160x600" data-w="160" data-h="600" style="width:160px;height:600px"><span>160 &times; 600</span></div></div>
+            </div>
             </aside>
         </div>
     </main>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div data-ad="native" class="adx"></div></div>
-
-    <!-- AD SLOT #4: BOTTOM FOOTER BANNER AD -->
-    <div id="ad-wrapper-footer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
-        <div class="w-full rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
-            <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-1.5">Advertisement</span>
-            <div id="ad-slot-footer" class="min-h-[90px] max-w-[970px] mx-auto bg-white/80 rounded-xl border border-slate-200/80 flex flex-col items-center justify-center p-3 text-slate-400 overflow-hidden">
-                <p class="text-xs font-semibold text-slate-500">Footer Multiplex / Leaderboard Ad Space (970x90 / Responsive)</p>
-                <p class="text-[11px] text-slate-400">Paste ad code in Admin Panel &rarr; Ads Management</p>
-            </div>
+    <!-- AD: NATIVE BANNER + SMARTLINK -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nx-ad-wrap my-8"><span class="nx-ad-label">Sponsored</span><div class="nx-ad-slot nx-ad-native" data-ad="native" data-w="0" data-h="0"><span>Native Banner (auto size)</span></div></div>
+        <div class="text-center mb-8">
+            <a id="nxSmartlink" href="#" target="_blank" rel="nofollow noopener" class="hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold shadow-sm transition"><i class="fa-solid fa-gift"></i> Special Offers &rarr;</a>
         </div>
     </div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div data-ad="b728x90" data-media="(min-width:768px)" class="adx"></div>
-        <div data-ad="b320x50" data-media="(max-width:767px)" class="adx"></div>
-    </div>
-
-    <!-- Side rails (wide screens only): 160x300 left, 160x600 right -->
-    <div data-ad="b160x300" data-media="(min-width:1600px)" class="adx adx-rail adx-left"></div>
-    <div data-ad="b160x600" data-media="(min-width:1600px)" class="adx adx-rail adx-right"></div>
 
     <!-- ==================== FOOTER & AFFILIATE DISCLOSURE ==================== -->
     <footer class="bg-slate-900 text-slate-300 pt-12 pb-8 border-t border-slate-800">
@@ -1006,137 +976,80 @@
             } catch (e) {}
         }
 
-        async function loadStoredAds() {
-            try {
-                let ads = null;
-                const { data, error } = await db.from('settings').select('*').eq('key', 'ads_config').maybeSingle();
-                if (!error && data && data.value) {
-                    ads = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
-                } else {
-                    ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
-                }
+                // ===== NEXBARI AD ENGINE =====
+        // false korle ad code na thakle box ta site-e dekhabe na
+        const NX_SHOW_PLACEHOLDER = true;
 
-                if (ads) {
-                    injectAdCode('ad-slot-top-leaderboard', ads.top);
-                    injectAdCode('ad-slot-infeed', ads.infeed);
-                    injectAdCode('ad-slot-sidebar', ads.sidebar);
-                    injectAdCode('ad-slot-footer', ads.footer);
-                    nxbRenderAds(ads);
-                }
-            } catch (e) {
-                const ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
-                injectAdCode('ad-slot-top-leaderboard', ads.top);
-                injectAdCode('ad-slot-infeed', ads.infeed);
-                injectAdCode('ad-slot-sidebar', ads.sidebar);
-                injectAdCode('ad-slot-footer', ads.footer);
-                nxbRenderAds(ads);
-            }
-        }
+        function nxVisible(el) { return el && getComputedStyle(el).display !== 'none'; }
 
-        /* ===== Adsterra ad system (banner sizes, native, social bar, popunder, smartlink) ===== */
-        const NXB_SIZES = { b728x90:[728,90], b468x60:[468,60], b300x250:[300,250], b160x600:[160,600], b160x300:[160,300], b320x50:[320,50] };
-        const NXB_REGIONS = [
-            { legacy:'top',     hide:['ad-wrapper-top','ad-slot-top-leaderboard'], keys:['b728x90','b320x50'] },
-            { legacy:'infeed',  hide:['ad-wrapper-infeed','ad-slot-infeed'],       keys:['b468x60','b300x250'] },
-            { legacy:'sidebar', hide:['ad-wrapper-sidebar','ad-slot-sidebar'],     keys:['b300x250'] },
-            { legacy:'footer',  hide:['ad-wrapper-footer','ad-slot-footer'],       keys:['b728x90','b320x50'] }
-        ];
-
-        // Accepts either the full Adsterra "GET CODE" snippet, or just the 32-character key.
-        function nxbBannerCode(slot, val, w, h) {
-            if (/^[a-f0-9]{32}$/i.test(val)) {
-                return "<script>atOptions={'key':'" + val + "','format':'iframe','height':" + h + ",'width':" + w + ",'params':{}};<\/script>" +
-                       "<script src=\"//www.highperformanceformat.com/" + val + "/invoke.js\"><\/script>";
-            }
-            return val;
-        }
-
-        // Each banner gets its own iframe so several banners can coexist (Adsterra uses a global atOptions).
-        function nxbFrame(el, html, w, h) {
-            const f = document.createElement('iframe');
-            f.setAttribute('width', w); f.setAttribute('height', h);
-            f.setAttribute('scrolling', 'no'); f.setAttribute('frameborder', '0');
-            f.style.cssText = 'border:0;display:block;margin:0 auto;max-width:100%;overflow:hidden';
-            el.appendChild(f);
-            const d = f.contentWindow.document;
-            d.open();
-            d.write('<!doctype html><html><head><base target="_blank"></head><body style="margin:0;overflow:hidden;background:transparent">' + html + '</body></html>');
-            d.close();
-        }
-
-        function nxbRunScripts(root) {
-            root.querySelectorAll('script').forEach(old => {
+        function nxRunScripts(container) {
+            container.querySelectorAll('script').forEach(old => {
                 const s = document.createElement('script');
                 Array.from(old.attributes).forEach(a => s.setAttribute(a.name, a.value));
-                if (old.textContent) s.appendChild(document.createTextNode(old.textContent));
+                if (old.textContent) s.text = old.textContent;
                 old.parentNode.replaceChild(s, old);
             });
         }
 
-        function nxbRenderAds(ads) {
+        // Banner protita nijer iframe-e cholbe, tai ek page-e onek banner thakleo atOptions conflict hobe na
+        function nxMountBanner(slot, code) {
+            const f = document.createElement('iframe');
+            f.width = slot.dataset.w;
+            f.height = slot.dataset.h;
+            f.scrolling = 'no';
+            f.setAttribute('frameborder', '0');
+            f.style.cssText = 'border:0;display:block;max-width:100%;overflow:hidden';
+            f.srcdoc = '<!DOCTYPE html><html><head><meta charset="utf-8"><base target="_blank">' +
+                '<style>html,body{margin:0;padding:0;overflow:hidden;background:transparent}</style></head><body>' +
+                code + '</body></html>';
+            slot.innerHTML = '';
+            slot.appendChild(f);
+            slot.classList.add('nx-filled');
+        }
+
+        function nxApplyAds(ads) {
             ads = ads || {};
-            // Hide the old placeholder box when only the new Adsterra slot is configured for that area
-            NXB_REGIONS.forEach(r => {
-                const legacyEmpty = !(ads[r.legacy] || '').trim();
-                if (legacyEmpty && r.keys.some(k => (ads[k] || '').trim())) {
-                    for (const id of r.hide) { const el = document.getElementById(id); if (el) { el.style.display = 'none'; break; } }
+            document.querySelectorAll('.nx-ad-wrap').forEach(wrap => {
+                const slot = wrap.querySelector('.nx-ad-slot');
+                if (!slot || !nxVisible(wrap)) return;   // ei screen-e hidden box-er ad load hobe na
+                const key = slot.dataset.ad;
+                const code = String(ads[key] || '').trim();
+                if (!code) { if (!NX_SHOW_PLACEHOLDER) wrap.style.display = 'none'; return; }
+                if (key === 'native') {
+                    slot.innerHTML = code;
+                    slot.classList.add('nx-filled');
+                    nxRunScripts(slot);
+                } else {
+                    nxMountBanner(slot, code);
                 }
             });
-            document.querySelectorAll('[data-ad]').forEach(el => {
-                if (el.dataset.done) return;
-                const slot = el.dataset.ad, val = (ads[slot] || '').trim();
-                if (!val) return;
-                if (el.dataset.media && !window.matchMedia(el.dataset.media).matches) return;
-                el.dataset.done = '1';
-                try {
-                    if (NXB_SIZES[slot]) {
-                        const w = NXB_SIZES[slot][0], h = NXB_SIZES[slot][1];
-                        nxbFrame(el, nxbBannerCode(slot, val, w, h), w, h);
-                    } else if (slot === 'smartlink') {
-                        if (!/^https?:\/\//i.test(val)) return;
-                        const a = document.createElement('a');
-                        a.href = val; a.target = '_blank'; a.rel = 'nofollow noopener';
-                        a.textContent = 'Special Offer for You \u2192';
-                        el.appendChild(a); el.classList.add('adx-smart');
-                    } else {
-                        el.innerHTML = val; nxbRunScripts(el);   // native banner
-                    }
-                    el.classList.add('on');
-                } catch (e) {}
-            });
-            // Page-wide scripts: Social Bar + Popunder (loaded once)
-            ['social', 'popunder'].forEach(k => {
-                const v = (ads[k] || '').trim();
-                if (!v || window['__nxb_' + k]) return;
-                window['__nxb_' + k] = 1;
-                const d = document.createElement('div');
-                document.body.appendChild(d);
-                d.innerHTML = v; nxbRunScripts(d);
+
+            const sl = String(ads.smartlink || '').trim();
+            const a = document.getElementById('nxSmartlink');
+            if (a && /^https?:\/\//i.test(sl)) { a.href = sl; a.classList.remove('hidden'); }
+
+            ['popunder', 'socialbar'].forEach(k => {
+                const c = String(ads[k] || '').trim();
+                if (!c) return;
+                const box = document.createElement('div');
+                box.innerHTML = c;
+                nxRunScripts(box);
+                while (box.firstChild) document.body.appendChild(box.firstChild);
             });
         }
 
-        function injectAdCode(containerId, htmlCode) {
-            const container = document.getElementById(containerId);
-            if (!container || !htmlCode || !htmlCode.trim()) return;
-            
-            container.innerHTML = htmlCode.trim();
-            container.classList.remove('flex', 'flex-col', 'items-center', 'justify-center', 'text-slate-400');
-
-            const scripts = container.querySelectorAll('script');
-            scripts.forEach(oldScript => {
-                const newScript = document.createElement('script');
-                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                if (oldScript.innerHTML) {
-                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+        async function loadStoredAds() {
+            let ads = null;
+            try {
+                const { data, error } = await db.from('settings').select('*').eq('key', 'ads_config').maybeSingle();
+                if (!error && data && data.value) {
+                    ads = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
                 }
-                oldScript.parentNode.replaceChild(newScript, oldScript);
-            });
-
-            if (htmlCode.includes('adsbygoogle')) {
-                try {
-                    (window.adsbygoogle = window.adsbygoogle || []).push({});
-                } catch (e) {}
+            } catch (e) {}
+            if (!ads) {
+                try { ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}'); } catch (e) { ads = {}; }
             }
+            nxApplyAds(ads);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
