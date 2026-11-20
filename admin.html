@@ -187,7 +187,7 @@
   <!-- TAB 3: ADS MANAGEMENT -->
   <div id="sectionAds" class="hidden space-y-6">
    <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
-    <div><h1 class="text-2xl font-black">Ads Management</h1><p class="text-sm text-slate-500">Paste your Google AdSense scripts, banner codes, or HTML ads below for each slot.</p></div>
+    <div><h1 class="text-2xl font-black">Ads Management</h1><p class="text-sm text-slate-500">Adsterra theke paoa code protita size-er box-e paste korun. Khali rakhle site-e shudhu size-er placeholder box thakbe.</p></div>
     <button onclick="saveAdSettings()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-sm transition flex items-center gap-2">
      <i class="fa-solid fa-floppy-disk"></i> Save All Ad Codes
     </button>
@@ -197,72 +197,45 @@
     <div id="adsStatusBox" class="hidden p-3.5 rounded-xl text-sm font-semibold"></div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-     <!-- Slot 1 -->
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">1. Top Leaderboard Banner (728x90 / Responsive)</label>
-      <textarea id="adTop" rows="4" placeholder="<!-- Paste Google AdSense or HTML banner code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
-     </div>
-     <!-- Slot 2 -->
-     <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">2. In-Feed / Mid-Page Horizontal Banner Ad</label>
-      <textarea id="adInfeed" rows="4" placeholder="<!-- Paste Google AdSense In-Feed code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
-     </div>
-     <!-- Slot 3 -->
-     <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">3. Sidebar Sticky Ad (300x250 / 300x600)</label>
-      <textarea id="adSidebar" rows="4" placeholder="<!-- Paste Sidebar Display Ad code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
-     </div>
-     <!-- Slot 4 -->
-     <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">4. Bottom Footer Banner (970x90 / Multiplex)</label>
-      <textarea id="adFooter" rows="4" placeholder="<!-- Paste Footer Multiplex or Display Ad code here -->" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
-     </div>
-    </div>
-
-    <div class="pt-6 border-t border-slate-200 space-y-4">
-     <h3 class="font-bold text-slate-900">Adsterra Ad Units</h3>
-     <p class="text-xs text-slate-500">For banners, paste either the full <b>GET CODE</b> snippet or just the 32-character <b>key</b> (the code is generated for the right size automatically). Native Banner, Social Bar and Popunder need the full snippet. Smartlink needs only the URL.</p>
-     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-     <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 728x90 (Leaderboard) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354084 · Key or full code</span></label>
-      <textarea id="adB728x90" rows="3" placeholder="Key or full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 728x90 — Top (desktop)</label>
+      <textarea id="ad_b728x90" rows="4" placeholder="Adsterra: Banner 728x90" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 468x60 (In-feed / mid-page) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354079 · Key or full code</span></label>
-      <textarea id="adB468x60" rows="3" placeholder="Key or full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 320x50 — Top (mobile)</label>
+      <textarea id="ad_b320x50" rows="4" placeholder="Adsterra: Banner 320x50" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 300x250 (Sidebar + mobile in-feed) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354080 · Key or full code</span></label>
-      <textarea id="adB300x250" rows="3" placeholder="Key or full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 468x60 — In-feed (tablet/desktop)</label>
+      <textarea id="ad_b468x60" rows="4" placeholder="Adsterra: Banner 468x60" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 160x600 (Right side rail, screens 1600px+) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354081 · Key or full code</span></label>
-      <textarea id="adB160x600" rows="3" placeholder="Key or full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 300x250 — Sidebar + mobile in-feed</label>
+      <textarea id="ad_b300x250" rows="4" placeholder="Adsterra: Banner 300x250" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 160x300 (Left side rail, screens 1600px+) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354082 · Key or full code</span></label>
-      <textarea id="adB160x300" rows="3" placeholder="Key or full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 160x300 — Sidebar</label>
+      <textarea id="ad_b160x300" rows="4" placeholder="Adsterra: Banner 160x300" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 320x50 (Mobile top & bottom) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354083 · Key or full code</span></label>
-      <textarea id="adB320x50" rows="3" placeholder="Key or full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Banner 160x600 — Sidebar (sticky)</label>
+      <textarea id="ad_b160x600" rows="4" placeholder="Adsterra: Banner 160x600" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Native Banner (above footer / below related products) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354077 · Paste full code</span></label>
-      <textarea id="adNative" rows="3" placeholder="Paste full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Native Banner — Footer / Product page</label>
+      <textarea id="ad_native" rows="4" placeholder="Adsterra: Native Banner code (script + container div)" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Social Bar (whole site) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354078 · Paste full code</span></label>
-      <textarea id="adSocial" rows="3" placeholder="Paste full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Social Bar — whole site</label>
+      <textarea id="ad_socialbar" rows="3" placeholder="Adsterra: Social Bar script" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Popunder (whole site) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354076 · Paste full code</span></label>
-      <textarea id="adPopunder" rows="3" placeholder="Paste full code" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Popunder — whole site</label>
+      <textarea id="ad_popunder" rows="3" placeholder="Adsterra: Popunder script" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
      <div class="space-y-2">
-      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Smartlink (sidebar "Special Offer" button) <span class="normal-case font-medium text-slate-400">· Adsterra ID 32354085 · Paste URL only</span></label>
-      <textarea id="adSmartlink" rows="3" placeholder="Paste URL only" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
-     </div>
+      <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Smartlink URL — "Special Offers" button</label>
+      <textarea id="ad_smartlink" rows="1" placeholder="https://...  (shudhu link, script na)" class="w-full p-3 text-xs font-mono bg-slate-900 text-emerald-400 rounded-xl outline-none border border-slate-700 focus:border-indigo-500"></textarea>
      </div>
     </div>
 
@@ -417,33 +390,25 @@ function showAdsStatus(message, type) {
     box.textContent = message;
 }
 
-const AD_FIELDS = {
-    top: 'adTop', infeed: 'adInfeed', sidebar: 'adSidebar', footer: 'adFooter',
-    b728x90: 'adB728x90',
-    b468x60: 'adB468x60',
-    b300x250: 'adB300x250',
-    b160x600: 'adB160x600',
-    b160x300: 'adB160x300',
-    b320x50: 'adB320x50',
-    native: 'adNative',
-    social: 'adSocial',
-    popunder: 'adPopunder',
-    smartlink: 'adSmartlink'
-};
+const AD_KEYS = ['b728x90','b320x50','b468x60','b300x250','b160x300','b160x600','native','socialbar','popunder','smartlink'];
 
 async function loadAdSettings() {
     let ads = null;
     try {
         const { data, error } = await db.from('settings').select('*').eq('key', 'ads_config').maybeSingle();
-        if (!error && data && data.value) ads = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+        if (!error && data && data.value) {
+            ads = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+        }
     } catch (e) {}
-    if (!ads) ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
-    Object.keys(AD_FIELDS).forEach(k => { $(AD_FIELDS[k]).value = ads[k] || ''; });
+    if (!ads) {
+        try { ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}'); } catch (e) { ads = {}; }
+    }
+    AD_KEYS.forEach(k => { const el = $('ad_' + k); if (el) el.value = ads[k] || ''; });
 }
 
 async function saveAdSettings() {
     const ads = {};
-    Object.keys(AD_FIELDS).forEach(k => { ads[k] = $(AD_FIELDS[k]).value.trim(); });
+    AD_KEYS.forEach(k => { const el = $('ad_' + k); ads[k] = el ? el.value.trim() : ''; });
     showAdsStatus('Saving ad settings to Supabase...', 'loading');
     localStorage.setItem('nexbari_ads_config', JSON.stringify(ads));
     try {
