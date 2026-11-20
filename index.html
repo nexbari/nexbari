@@ -57,6 +57,15 @@
             background-size: 16px 16px;
         }
     </style>
+    <style>
+        /* Adsterra ad slots (hidden until an ad code is configured) */
+        .adx{display:none;text-align:center;margin:1rem auto}
+        .adx.on{display:block}
+        .adx.on::before{content:"Advertisement";display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:6px}
+        .adx-rail{position:fixed;top:7rem;margin:0;z-index:20}
+        .adx-left{left:.5rem}.adx-right{right:.5rem}
+        .adx-smart a{display:inline-block;padding:.65rem 1.1rem;border-radius:.75rem;background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;font-weight:700;font-size:.8rem}
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white">
 
@@ -241,6 +250,11 @@
         </div>
     </div>
 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-ad="b728x90" data-media="(min-width:768px)" class="adx"></div>
+        <div data-ad="b320x50" data-media="(max-width:767px)" class="adx"></div>
+    </div>
+
     <!-- ==================== MAIN CATALOG & SIDEBAR LAYOUT ==================== -->
     <main id="deals-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         
@@ -372,6 +386,9 @@
                     </div>
                 </div>
 
+                <div data-ad="b468x60" data-media="(min-width:640px)" class="adx"></div>
+                <div data-ad="b300x250" data-media="(max-width:639px)" class="adx"></div>
+
                 <!-- Buying Guides Section -->
                 <section class="mt-10 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
                     <div class="flex items-center justify-between mb-6">
@@ -423,6 +440,8 @@
                         </div>
                     </div>
 
+                    <div data-ad="b300x250" data-media="(min-width:1024px)" class="adx"></div>
+
                     <!-- Explore Top Categories Card -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                         <h3 class="font-display font-bold text-slate-900 text-base mb-3">Explore Top Categories</h3>
@@ -470,6 +489,8 @@
                         </ul>
                     </div>
 
+                    <div data-ad="smartlink" class="adx"></div>
+
                     <!-- Newsletter Box -->
                     <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-5 text-white shadow-md">
                         <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-brand-500/30 text-brand-200 px-2.5 py-1 rounded-md mb-2">Weekly Price Drops</span>
@@ -489,6 +510,8 @@
         </div>
     </main>
 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div data-ad="native" class="adx"></div></div>
+
     <!-- AD SLOT #4: BOTTOM FOOTER BANNER AD -->
     <div id="ad-wrapper-footer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
         <div class="w-full rounded-2xl border border-dashed border-slate-300 ad-slot-pattern p-3 text-center">
@@ -499,6 +522,15 @@
             </div>
         </div>
     </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-ad="b728x90" data-media="(min-width:768px)" class="adx"></div>
+        <div data-ad="b320x50" data-media="(max-width:767px)" class="adx"></div>
+    </div>
+
+    <!-- Side rails (wide screens only): 160x300 left, 160x600 right -->
+    <div data-ad="b160x300" data-media="(min-width:1600px)" class="adx adx-rail adx-left"></div>
+    <div data-ad="b160x600" data-media="(min-width:1600px)" class="adx adx-rail adx-right"></div>
 
     <!-- ==================== FOOTER & AFFILIATE DISCLOSURE ==================== -->
     <footer class="bg-slate-900 text-slate-300 pt-12 pb-8 border-t border-slate-800">
@@ -989,6 +1021,7 @@
                     injectAdCode('ad-slot-infeed', ads.infeed);
                     injectAdCode('ad-slot-sidebar', ads.sidebar);
                     injectAdCode('ad-slot-footer', ads.footer);
+                    nxbRenderAds(ads);
                 }
             } catch (e) {
                 const ads = JSON.parse(localStorage.getItem('nexbari_ads_config') || '{}');
@@ -996,7 +1029,90 @@
                 injectAdCode('ad-slot-infeed', ads.infeed);
                 injectAdCode('ad-slot-sidebar', ads.sidebar);
                 injectAdCode('ad-slot-footer', ads.footer);
+                nxbRenderAds(ads);
             }
+        }
+
+        /* ===== Adsterra ad system (banner sizes, native, social bar, popunder, smartlink) ===== */
+        const NXB_SIZES = { b728x90:[728,90], b468x60:[468,60], b300x250:[300,250], b160x600:[160,600], b160x300:[160,300], b320x50:[320,50] };
+        const NXB_REGIONS = [
+            { legacy:'top',     hide:['ad-wrapper-top','ad-slot-top-leaderboard'], keys:['b728x90','b320x50'] },
+            { legacy:'infeed',  hide:['ad-wrapper-infeed','ad-slot-infeed'],       keys:['b468x60','b300x250'] },
+            { legacy:'sidebar', hide:['ad-wrapper-sidebar','ad-slot-sidebar'],     keys:['b300x250'] },
+            { legacy:'footer',  hide:['ad-wrapper-footer','ad-slot-footer'],       keys:['b728x90','b320x50'] }
+        ];
+
+        // Accepts either the full Adsterra "GET CODE" snippet, or just the 32-character key.
+        function nxbBannerCode(slot, val, w, h) {
+            if (/^[a-f0-9]{32}$/i.test(val)) {
+                return "<script>atOptions={'key':'" + val + "','format':'iframe','height':" + h + ",'width':" + w + ",'params':{}};<\/script>" +
+                       "<script src=\"//www.highperformanceformat.com/" + val + "/invoke.js\"><\/script>";
+            }
+            return val;
+        }
+
+        // Each banner gets its own iframe so several banners can coexist (Adsterra uses a global atOptions).
+        function nxbFrame(el, html, w, h) {
+            const f = document.createElement('iframe');
+            f.setAttribute('width', w); f.setAttribute('height', h);
+            f.setAttribute('scrolling', 'no'); f.setAttribute('frameborder', '0');
+            f.style.cssText = 'border:0;display:block;margin:0 auto;max-width:100%;overflow:hidden';
+            el.appendChild(f);
+            const d = f.contentWindow.document;
+            d.open();
+            d.write('<!doctype html><html><head><base target="_blank"></head><body style="margin:0;overflow:hidden;background:transparent">' + html + '</body></html>');
+            d.close();
+        }
+
+        function nxbRunScripts(root) {
+            root.querySelectorAll('script').forEach(old => {
+                const s = document.createElement('script');
+                Array.from(old.attributes).forEach(a => s.setAttribute(a.name, a.value));
+                if (old.textContent) s.appendChild(document.createTextNode(old.textContent));
+                old.parentNode.replaceChild(s, old);
+            });
+        }
+
+        function nxbRenderAds(ads) {
+            ads = ads || {};
+            // Hide the old placeholder box when only the new Adsterra slot is configured for that area
+            NXB_REGIONS.forEach(r => {
+                const legacyEmpty = !(ads[r.legacy] || '').trim();
+                if (legacyEmpty && r.keys.some(k => (ads[k] || '').trim())) {
+                    for (const id of r.hide) { const el = document.getElementById(id); if (el) { el.style.display = 'none'; break; } }
+                }
+            });
+            document.querySelectorAll('[data-ad]').forEach(el => {
+                if (el.dataset.done) return;
+                const slot = el.dataset.ad, val = (ads[slot] || '').trim();
+                if (!val) return;
+                if (el.dataset.media && !window.matchMedia(el.dataset.media).matches) return;
+                el.dataset.done = '1';
+                try {
+                    if (NXB_SIZES[slot]) {
+                        const w = NXB_SIZES[slot][0], h = NXB_SIZES[slot][1];
+                        nxbFrame(el, nxbBannerCode(slot, val, w, h), w, h);
+                    } else if (slot === 'smartlink') {
+                        if (!/^https?:\/\//i.test(val)) return;
+                        const a = document.createElement('a');
+                        a.href = val; a.target = '_blank'; a.rel = 'nofollow noopener';
+                        a.textContent = 'Special Offer for You \u2192';
+                        el.appendChild(a); el.classList.add('adx-smart');
+                    } else {
+                        el.innerHTML = val; nxbRunScripts(el);   // native banner
+                    }
+                    el.classList.add('on');
+                } catch (e) {}
+            });
+            // Page-wide scripts: Social Bar + Popunder (loaded once)
+            ['social', 'popunder'].forEach(k => {
+                const v = (ads[k] || '').trim();
+                if (!v || window['__nxb_' + k]) return;
+                window['__nxb_' + k] = 1;
+                const d = document.createElement('div');
+                document.body.appendChild(d);
+                d.innerHTML = v; nxbRunScripts(d);
+            });
         }
 
         function injectAdCode(containerId, htmlCode) {
